@@ -1,0 +1,121 @@
+<!--
+// INFO
+	Developers: Calista Dominitz and Matthew Beitler
+	Project: Personal outfit manager
+    Class: CS 340
+
+// Citation
+    Citation for html structure / style
+    Date: 8/13/2023
+    Based on: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+    Type: source code
+    Authors (github usernames):
+        gkochera
+        Cortona1
+        currym-osu
+        dmgs11
+-->
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title> Occasions </title>
+	</head>
+
+	<body>
+
+        <H2>Occasions</H2>
+
+        <div id="browse" style="display: block">
+        <p><strong>Browse Occasions</strong></p>
+
+        <table id="occasions">
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+        
+            <tbody>
+              {{#each data}}
+                <tr>
+                    <td>{{this.occasion_id}}</td>
+                    <td>{{this.user_id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.formality}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <p>&nbsp;</p>
+        </div> 
+        <div id="insert" style="display: block">
+            <form id="addOccasion" method="POST" action="add-occasion">
+                <legend><strong>Add New Occasion</strong></legend>
+                <fieldset class="fields">
+                    <label> User </label>
+                    <select name="addUserID" id="addUserID">
+                        {{#each users}}
+                        <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> Name </label> <input type="text" name="name" placeholder="e.g. family gathering"><br>
+                    <label> Formality </label> <input type="text" name="formality" placeholder="e.g. casual"><br>
+                </fieldset>
+                <input class="btn" type="submit" id="addOccasion" value="Add New Occasion">
+                <input class="btn" type="button" value="cancel">
+            </form>
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="update" style="display: block">
+            <form id="updateOccasion">
+                <legend><strong>Update Occasion</strong></legend>
+                <fieldset class="fields">
+                    <label>Occasion ID</label>
+                    <select name="updateOccasionID" id="updateOccasionID">
+                        {{#each data}}
+                        <option value="{{this.top_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> User </label>
+                    <select name="updateUserID" id="updateUserID">
+                        {{#each users}}
+                        <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> Name </label> <input type="text" name="name" placeholder="e.g. family gathering"><br>
+                    <label> Formality </label> <input type="text" name="type" placeholder="e.g. casual"><br>
+                </fieldset>
+                <input class="btn" type="submit" id="updateOccasion" value="Update Occasion">
+                    <input class="btn" type="button" value="cancel" >
+            </form> 
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="delete" style="display: block">
+        <form id="deleteOccasion">
+            <legend><strong>Delete Accessory</strong></legend>
+                <fieldset class="fields">
+                <p>Are you sure you wish to delete the following?</p>
+                <label>Accessory ID</label>
+                <select name="deleteOccasionID" id="deleteOccasionID">
+                    {{#each data}}
+                    <option value="{{this.top_id}}">{{this.name}}</option>
+                    {{/each}}
+                </select><br>               
+            </fieldset>
+            <input class="btn" type="submit" id="deleteOccasion" value="Delete Occasion">
+                <input class="btn" type="button" value="cancel">
+        </form> 
+        </div>
+	</body>
+</html>
+

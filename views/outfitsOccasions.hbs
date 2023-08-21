@@ -1,0 +1,126 @@
+<!--
+// INFO
+	Developers: Calista Dominitz and Matthew Beitler
+	Project: Personal outfit manager
+    Class: CS 340
+
+// Citation
+    Citation for html structure / style
+    Date: 8/13/2023
+    Based on: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+    Type: source code
+    Authors (github usernames):
+        gkochera
+        Cortona1
+        currym-osu
+        dmgs11
+-->
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title> Outfits-Occasions </title>
+	</head>
+
+	<body>
+
+        <H2>Outfits for Occasions</H2>  
+        <div id="browse" style="display: block">
+        <p><strong>Browse Outfits for Occasions</strong></p>
+
+        <table id="outfitOccasions">
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+        
+            <tbody>
+              {{#each data}}
+                <tr>
+                    <td>{{this.outfit_occ_id}}</td>
+                    <td>{{this.outfit}}</td>
+                    <td>{{this.occasion}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <p>&nbsp;</p>
+        </div> 
+        <div id="insert" style="display: block">
+            <form id="addOutfitOccasion" method="POST" action="/add-outfitsOccasions">
+                <legend><strong>Add New Outfit for Occasion</strong></legend>
+                <fieldset class="fields">
+                    <label> Outfit </label>
+                    <select name="addOutfitID" id="addOutfitID">
+                        {{#each outfits}}
+                        <option value="{{this.outfit_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> Occasion </label>
+                    <select name="addOccasionID" id="addOccasionID">
+                        {{#each occasions}}
+                        <option value="{{this.occasion_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                </fieldset>
+                <input class="btn" type="submit" id="addOccasion" value="Create New Outfit Occasion Pair">
+                <input class="btn" type="button" value="cancel">
+            </form>
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="update" style="display: block">
+            <form id="updateOutfitOccasion">
+                <legend><strong>Update Outfit Occasion Pair</strong></legend>
+                <fieldset class="fields">
+                    <label>Outfit-Occasion ID</label>
+                    <select name="outfit_occ_ID" id="outfit_occ_ID">
+                        {{#each data}}
+                        <option value="{{this.outfit_occ_id}}">{{this.outfit_occ_id}}</option>
+                        {{/each}}
+                    </select><br> 
+                    <label> Outfit </label>
+                    <select name="updateOutfitID" id="addOutfitID">
+                        {{#each outfits}}
+                        <option value="{{this.outfit_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> Occasion </label>
+                    <select name="updateOccasionID" id="updateOccasionID">
+                        {{#each occasions}}
+                        <option value="{{this.occasion_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                </fieldset>
+                <input class="btn" type="submit" id="updateOccasion" value="Update Outfit Occasion Pair">
+                    <input class="btn" type="button" value="cancel" >
+            </form> 
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="delete" style="display: block">
+        <form id="deleteOutfitOccasion">
+            <legend><strong>Delete Outfit Occasion Pair</strong></legend>
+                <fieldset class="fields">
+                <p>Are you sure you wish to delete the following?</p>
+                <label>Outfit-Occasion ID</label>
+                <select name="outfit_occ_ID" id="outfit_occ_ID">
+                    {{#each data}}
+                    <option value="{{this.outfit_occ_id}}">{{this.outfit_occ_id}}</option>
+                    {{/each}}
+                </select><br>                
+            </fieldset>
+            <input class="btn" type="submit" id="deleteOccasion" value="Delete Outfit Occasion Pair">
+                <input class="btn" type="button" value="cancel">
+        </form> 
+        </div>
+	</body>
+</html>

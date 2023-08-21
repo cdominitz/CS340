@@ -1,0 +1,135 @@
+<!--
+// INFO
+	Developers: Calista Dominitz and Matthew Beitler
+	Project: Personal outfit manager
+    Class: CS 340
+
+// Citation
+    Citation for html structure / style
+    Date: 8/13/2023
+    Based on: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+    Type: source code
+    Authors (github usernames):
+        gkochera
+        Cortona1
+        currym-osu
+        dmgs11
+-->
+
+<h2>Users</h2>
+<table id="users">
+    <thead>
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    <tbody id="table_data">
+      {{#each data}}
+        <tr>
+            <td>{{this.user_id}}</td>
+            <td>{{this.first_name}}</td>
+            <td>{{this.last_name}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.password}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<form id="addUser" method="POST" action="/add-user">
+    <legend><strong>Add User</strong></legend>
+    <fieldset class="fields">
+        <p>To add a new person, please enter their information below and click 'Submit'!</p>
+        <label for="input-firstName"> First Name </label> 
+        <input type="text" name="firstName" placeholder="e.g. John"><br>
+
+        <label for="input-lastName"> Last Name </label> 
+        <input type="text" name="lastName" placeholder="e.g. Doe"><br>
+
+        <label for="input-email"> Email </label> 
+        <input type="text" name="email" placeholder="e.g. JohnDoe@gmail.com"><br>
+
+        <label for="input-password"> Password </label> 
+        <input type="text" name="password" placeholder="e.g. 12345"><br>
+
+    </fieldset>
+    <input class="btn" type="submit" id="addUser" value="Add New User">
+    <input class="btn" type="button" value="cancel">
+</form>
+
+<p>&nbsp;</p>
+<div id="update" style="display: block">
+    <form id="updateUser" method="POST" action="/update-user">
+        <legend><strong>Update User (Working)</strong></legend>
+        <fieldset class="fields">
+            <label>User ID</label>
+            <p>Select the user you wish to update</p>
+            <select name="updateUserID" id="updateUserID">
+                <option value="">Select a User</option>
+                {{#each data}}
+                <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
+                {{/each}}
+            </select><br>
+            <label for="input-firstName"> First Name </label> 
+            <input type="text" name="firstName" placeholder="e.g. John"><br>
+    
+            <label for="input-lastName"> Last Name </label> 
+            <input type="text" name="lastName" placeholder="e.g. Doe"><br>
+    
+            <label for="input-email"> Email </label> 
+            <input type="text" name="email" placeholder="e.g. JohnDoe@gmail.com"><br>
+    
+            <label for="input-password"> Password </label> 
+            <input type="text" name="password" placeholder="e.g. 12345"><br>
+
+        </fieldset>
+        <input class="btn" type="submit" id="updateUser" value="Update User">
+            <input class="btn" type="button" value="cancel" >
+    </form> 
+</div>
+
+<p>&nbsp;</p>
+<div id="delete" style="display: block">
+    <form id="deleteUserID" method="POST" action="/delete-user">
+    <legend><strong>Delete User (Working)</strong></legend>
+        <fieldset class="fields">
+        <p>Select the user you wish to delete</p>
+        <select name="deleteUserID" id="deleteUserID">
+            <option value="">Select User</option>
+            {{#each data}}
+            <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
+            {{/each}}
+        </select>
+            
+    </fieldset>
+    <input class="btn" type="submit" id="deleteUserID" value="Delete User">
+    <input class="btn" type="button" value="cancel" >
+</form> 
+</div>
+
+<script type="text/javascript">
+function populate()
+{
+    selected_id = document.getElementById("updateUserID").value
+    if (selected_id != "") 
+    {
+        values = 0
+        rows = document.getElementById("table_data").getElementsByTagName("tr")
+        for (i = 0; i < rows.length; i++) 
+        {
+            one_row = rows[i].getElementsByTagName("td")
+            if (one_row[0].innerText == selected_id) {values = rows[i].getElementsByTagName("td")}
+        }
+        
+        fields = document.getElementById("updateUser").getElementsByTagName("input")
+        for (i = 0; i < values.length - 1; i++) {fields[i].value = values[i+1].innerText}
+    }
+}
+
+document.getElementById("updateUserID").addEventListener("click", populate)
+</script>

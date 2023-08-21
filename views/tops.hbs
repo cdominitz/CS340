@@ -1,0 +1,145 @@
+<!--
+// INFO
+	Developers: Calista Dominitz and Matthew Beitler
+	Project: Personal outfit manager
+    Class: CS 340
+
+// Citation
+    Citation for html structure / style
+    Date: 8/13/2023
+    Based on: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+    Type: source code
+    Authors (github usernames):
+        gkochera
+        Cortona1
+        currym-osu
+        dmgs11
+-->
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title> Tops </title>
+	</head>
+
+	<body>
+        <h2>Tops</h2>
+            <div id="browse" style="display: block">
+        <p><strong>Browse Tops</strong></p>
+
+        <table id="tops">
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+        
+            <tbody id="table_data">
+              {{#each data}}
+                <tr>
+                    <td>{{this.top_id}}</td>
+                    <td>{{this.user_id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.type}}</td>
+                    <td>{{this.color}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <p>&nbsp;</p>
+        </div> 
+        <div id="insert" style="display: block">
+            <form id="addTop" method="POST" action="/add-top">
+                <legend><strong>Add New Top</strong></legend>
+                <fieldset class="fields">
+                    <label> User </label>
+                    <select name="addUserID" id="addUserID">
+                        {{#each users}}
+                        <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> Name </label> <input type="text" name="name" placeholder="e.g. sports tee"><br>
+                    <label> Type </label> <input type="text" name="type" placeholder="e.g. t-shirt"><br>
+                    <label> Color </label> <input type="text" name="color" placeholder="e.g. black"><br>
+                </fieldset>
+                <input class="btn" type="submit" id="addTop" value="Add New Top">
+                <input class="btn" type="button" value="cancel">
+            </form>
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="update" style="display: block">
+            <form id="updateOutfit">
+                <legend><strong>Update Top</strong></legend>
+                <fieldset class="fields">
+                    <label>Top ID</label>
+                    <select name="updateTopID" id="updateTopID">
+                        <option value="">Select a Top</option>
+                        {{#each data}}
+                        <option value="{{this.top_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> User </label>
+                    <select name="updateUserID" id="updateUserID">
+                        {{#each users}}
+                        <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> Name </label> <input type="text" name="name" placeholder="e.g. sports tee"><br>
+                    <label> Type </label> <input type="text" name="type" placeholder="e.g. t-shirt"><br>
+                    <label> Color </label> <input type="text" name="color" placeholder="e.g. black"><br>
+                </fieldset>
+                <input class="btn" type="submit" id="UpdateTop" value="Update Top">
+                    <input class="btn" type="button" value="cancel" >
+            </form> 
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="delete" style="display: block">
+        <form id="deleteUser">
+            <legend><strong>Delete Top</strong></legend>
+                <fieldset class="fields">
+                <p>Are you sure you wish to delete the following?</p>
+                <label>Top ID</label>
+                <select name="deleteTopID" id="deleteTopID">
+                    {{#each data}}
+                    <option value="{{this.top_id}}">{{this.name}}</option>
+                    {{/each}}
+                </select><br>
+                    
+            </fieldset>
+            <input class="btn" type="submit" id="DeleteTop" value="Delete Top">
+                <input class="btn" type="button" value="cancel" >
+        </form> 
+        </div>
+
+        <script type="text/javascript">
+function populate()
+{
+    selected_id = document.getElementById("updateTopID").value
+    if (selected_id != "") 
+    {
+        values = 0
+        rows = document.getElementById("table_data").getElementsByTagName("tr")
+        for (i = 0; i < rows.length; i++) 
+        {
+            one_row = rows[i].getElementsByTagName("td")
+            if (one_row[0].innerText == selected_id) {values = rows[i].getElementsByTagName("td")}
+        }
+        
+        fields = document.getElementById("updateTop").getElementsByTagName("input")
+        for (i = 0; i < values.length - 1; i++) {fields[i].value = values[i+1].innerText}
+    }
+}
+
+document.getElementById("updateTopID").addEventListener("click", populate)
+</script>
+	</body>
+</html>

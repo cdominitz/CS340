@@ -1,0 +1,248 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
+/*   ----- Variables  -----  */
+:root {
+    --golden-brown: rgba(191, 148, 95, 1);
+    --light-brown: rgba(165, 123, 86, 1);
+    --mid-peach: rgba(216, 178, 145, 1);
+    --dark-font: rgba(89, 59, 41, 1);
+    --light-bg: rgba(216, 216, 216, 1);
+    /* Color Theme Swatches in Hex */
+
+/* Color Theme Swatches in RGBA */
+    --buttons: rgba(165, 141, 96, 1); 
+    --header: rgba(165, 120, 81, 1); 
+    --background: rgba(216, 204, 192, 1); 
+    --table: rgba(165, 151, 142, 1); 
+    --dark-text: rgba(63, 58, 58, 1); 
+
+  }
+
+  /*  ----- Viewport ----- elements inherited by all remaining elements ----- */
+  body {       /* Can alternatively define in html {} or :root {} */
+    background-color:var(--background);
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: var(--dark-text);
+    font-family: 'Poppins', sans-serif;
+    margin:0 auto;
+    padding: 3%;
+    max-width: 900px;
+    min-width: 500px;
+  }
+  
+  /*  ----- Page layout blocks -----  */
+  header, main, footer{
+    padding: 3%;
+  }
+  header {
+    color:var(--header);
+    margin: 1%;
+  }
+  main {
+    background-color:var(--background);
+    padding: 0.1%;
+    border: 2px solid var(--buttons);
+    margin: 0 auto;
+  }
+  section {
+    border: 2px solid var(--header);
+    padding: 1%;
+  }
+    article {
+      border-top: 2px solid var(--header);
+      padding: 1.5%;
+    }
+      #topic1 {}
+      #topic2 {}
+  div {}
+  aside {}
+  footer {
+    text-align: right;
+    color: var(--header);
+  }
+  
+  /*  ----- Navigation ----- Override text links for navigation only.  */
+  nav {
+    text-align: center;
+    display: flex;
+    flex-wrap: row;
+    max-width: 95%;
+  }
+  nav a {
+    border-radius: 5px 5px 0 0;
+    font-size: 1em;
+    font-weight: bold;
+
+    padding: 0.5% 1% 0.5% 1%;
+    text-decoration: none;
+  }
+  nav a:hover {
+    color: var(--buttons);
+  }
+
+  dt {
+    font-weight: bold;
+  }
+
+  /*  ----- Table ----- */
+  table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    max-width: 90%;
+    min-width: 80%;
+    table-layout: auto;
+  }
+  caption {
+    margin: 2%;
+    font-size: 90%;
+  }
+  thead {
+    text-align: center;
+  }
+  tbody {
+    text-align: center;
+  }
+  th {
+    margin: 1%;
+  }
+  td {
+    padding: 0.5%;
+  }
+  tbody tr:nth-child(odd){
+    background-color: var(--table);
+  }
+
+
+  /*  ----- Form ----- */
+  form, button, input, select, textarea {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  input, select, textarea{
+    padding: 0.5%;
+    font-size: 100%;
+  }
+  fieldset {
+    margin-bottom: 4%;
+  }
+    legend {
+      font-weight: bold;
+      font-size: large;
+      padding: 1%;
+    }
+  label {
+      display: block;
+      margin-top: 3%;
+      font-size:95%;
+  }
+    button {
+      padding: 1%;
+      font-size: 100%;
+      margin-top: 2%;
+    }
+
+    button:hover{
+    }
+
+    output {}
+    meter {}
+    progress {}
+      optgroup {}
+      option {}
+
+    input:focus{
+    }
+
+    *::placeholder{
+      font-size: 80%;
+    }
+
+    *:required{
+      border: 2px solid darkgreen;
+    }
+
+    label.required:after{
+      content: "*";
+      color: red;
+    }
+  
+  /*  ----- Classes for alignment, positioning, widths, grids, embellishments, and animation -----  */
+  /*.gallery {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  
+  .gallery figure{
+    width: 320px;
+    margin: .75%;
+    padding: 1%;
+    color: var(--sky-blue);
+  }
+
+  .gallery img{
+    width: 100%;
+    border: 2px solid var(--warm-walnut);
+    color: var(--dark-walnut);
+  }
+
+  .gallery figcaption{
+    display: block;
+    padding: 3px;
+    color: var(--rust);
+  }*/
+  
+  
+  @keyframes App-logo {}
+
+  /*   ===== TABLET  media query overrides mobile styles ===== */
+  @media all and (min-width: 600px) {}
+  
+  /*   ===== DESKTOP  media query overrides mobile and tablet styles ===== */
+  @media all and (min-width: 1080px) {}
+  
+  /*   ===== PRINT  media query overrides previous styles =====  */
+  @media print {}
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/*
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+} */
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,127 @@
+<!--
+// INFO
+	Developers: Calista Dominitz and Matthew Beitler
+	Project: Personal outfit manager
+    Class: CS 340
+
+// Citation
+    Citation for html structure / style
+    Date: 8/13/2023
+    Based on: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+    Type: source code
+    Authors (github usernames):
+        gkochera
+        Cortona1
+        currym-osu
+        dmgs11
+-->
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title> Outfits-Accessories </title>
+	</head>
+
+	<body>
+
+        <H2>Outfits with Accessories</H2>
+
+        <div id="browse" style="display: block">
+        <p><strong>Browse Outfits with Accessories</strong></p>
+
+        <table id="outfitAccessories">
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+        
+            <tbody>
+              {{#each data}}
+                <tr>
+                    <td>{{this.outfit_acc_id}}</td>
+                    <td>{{this.outfit}}</td>
+                    <td>{{this.accessory}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <p>&nbsp;</p>
+        </div> 
+        <div id="insert" style="display: block">
+            <form id="addOutfitAccessory" method="POST" action="/add-outfitsAccessories">
+                <legend><strong>Add New Outfit with Accessory</strong></legend>
+                <fieldset class="fields">
+                    <label> Outfit </label>
+                    <select name="addOutfitID" id="addOutfitID">
+                        {{#each outfits}}
+                        <option value="{{this.outfit_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> Accessory </label>
+                    <select name="addAccessoryID" id="updateAccessoryID">
+                        {{#each accessories}} 
+                        <option value="{{this.accessory_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                </fieldset>
+                <input class="btn" type="submit" id="addOutfitAccessory" value="Create New Outfit Accessory Pair">
+                <input class="btn" type="button" value="cancel">
+            </form>
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="update" style="display: block">
+            <form id="updateOutfitAccessory">
+                <legend><strong>Update Outfit Accessory Pair</strong></legend>
+                <fieldset class="fields">
+                    <label>Outfit-Accessory ID</label>
+                    <select name="outfit_acc_id" id="outfit_acc_id">
+                        {{#each data}}
+                        <option value="{{this.outfit_acc_id}}">{{this.outfit_acc_id}}</option>
+                        {{/each}}
+                    </select><br> 
+                    <label> Outfit </label>
+                    <select name="updateOutfitID" id="updateOutfitID">
+                        {{#each outfits}}
+                        <option value="{{this.outfit_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> Accessory </label>
+                    <select name="updateAccessoryID" id="updateAccessoryID">
+                        {{#each accessories}} 
+                        <option value="{{this.accessory_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                </fieldset>
+                <input class="btn" type="submit" id="updateOutfitAccessory" value="Update Outfit Accessory Pair">
+                    <input class="btn" type="button" value="cancel" >
+            </form> 
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="delete" style="display: block">
+        <form id="deleteOutfitAccessory">
+            <legend><strong>Delete Outfit Accessory Pair</strong></legend>
+                <fieldset class="fields">
+                <p>Are you sure you wish to delete the following?</p>
+                <label>Outfit-Accessory ID</label>
+                <select name="outfit_acc_ID" id="outfit_acc_ID">
+                    {{#each data}}
+                    <option value="{{this.outfit_acc_id}}">{{this.outfit_acc_id}}</option>
+                    {{/each}}
+                </select><br>                
+            </fieldset>
+            <input class="btn" type="submit" id="deleteOutfitAccessory" value="Delete Outfit Accessory Pair">
+                <input class="btn" type="button" value="cancel">
+        </form> 
+        </div>
+	</body>
+</html>

@@ -1,0 +1,214 @@
+<!--
+// INFO
+	Developers: Calista Dominitz and Matthew Beitler
+	Project: Personal outfit manager
+    Class: CS 340
+
+// Citation
+    Citation for html structure / style
+    Date: 8/13/2023
+    Based on: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+    Type: source code
+    Authors (github usernames):
+        gkochera
+        Cortona1
+        currym-osu
+        dmgs11
+-->
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title> homepage </title>
+	</head>
+
+	<body>
+        <h2>Outfits</h2>
+        <div id="browse" style="display: block">
+        <p><strong>Browse Outfits</strong></p>
+	        <form id="searchOutfit">
+                <input type="text" name="name">
+                <input class="btn" type="submit" id="searchOutfit" value="search"><br>
+        </form>
+        <table id="outfits">
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                    <th>Delete</th>
+                </tr>
+            </thead>
+        
+            <tbody>
+              {{#each data}}
+                <tr>
+                    <td>{{this.outfit_id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.tops}}</td>
+                    <td>{{this.bottoms}}</td>
+                    <td>{{this.shoes}}</td>
+                    <td>{{this.jackets}}</td>
+                    <td>{{this.formality}}</td>
+                    <td type="date">{{this.last_worn}}</td>
+                    <td>
+                        <form id="deleteOutfitID" method="POST" action="/delete-outfit">
+                            <button type="submit" name="deleteOutfitID" value="{{this.outfit_id}}">Delete</button>
+                        </form>            
+
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <p>&nbsp;</p>
+        </div> 
+        <div id="insert" style="display: block">
+            <form id="addOutfit" method="POST" action="/add-outfit">
+                <legend><strong>Add New Outfit</strong></legend>
+                <fieldset class="fields">
+                    <label for="input-name"> Name </label> 
+                    <input type="text" name="name" placeholder="e.g. business suit"><br>
+                    
+                    <label for="input-topID"> Top </label>
+                    <select name="topID" id="topID">
+                        <option value="">Select Top</option>
+                        {{#each tops}}
+                        <option value="{{this.top_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+
+                    <label for="input-bottomID"> Bottom </label>
+                    <select name="bottomID" id="bottomID">
+                        <option value="">Select Bottoms</option>
+                        {{#each bottoms}}
+                        <option value="{{this.bottom_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+
+                    <label for="input-shoeID"> Shoes </label>
+                    <select name="shoeID" id="shoeID">
+                        <option value="">Select Shoes</option>
+                        {{#each shoes}}
+                        <option value="{{this.shoe_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+
+                    <label> Jackets </label>
+                    <select name="jacketID" id="jacketID">
+                        <option value="NULL">Select a Jacket</option>
+                        {{#each jackets}}
+                        <option value="{{this.jacket_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+
+                    <label for="input-formality"> Formality </label> 
+                    <input type="text" name="formality" placeholder="e.g. business casual"><br>
+                    <label> Last Worn </label> <input type="date" name="lastWorn"><br>
+
+                    <label> Accessories:</label>
+                        {{#each accessories}}
+                        <label><input type="checkbox" name="accessory" value="{{this.accessory_id}}">{{this.name}}</label>
+                        {{/each}}
+
+                    <label> Occasion(s):</label>
+                        {{#each occasions}}
+                        <label><input type="checkbox" name="occasion" value="{{this.occasion_id}}">{{this.name}}</label>
+                        {{/each}}
+                </fieldset>
+                <input class="btn" type="submit" id="addOutfit" value="Add New Outfit">
+                <input class="btn" type="button" value="cancel">
+            </form>
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="update" style="display: block">
+            <form id="updateOutfit" method="POST" action="/update-outfit">
+                <legend><strong>Update Outfit (Working)</strong></legend>
+                <fieldset class="fields">
+                    <label>Outfit ID</label>
+                    <select name="updateOutfitID" id="updateOutfitID">
+                        <option value="">Select Outfit</option>
+                        {{#each data}}
+                        <option value="{{this.outfit_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label for="input-name"> Name </label> 
+                    <input type="text" name="name" placeholder="e.g. business suit"><br>
+                    
+                    <label for="input-topID"> Top </label>
+                    <select name="topID" id="topID">
+                        <option value="">Select Top</option>
+                        {{#each tops}}
+                        <option value="{{this.top_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+
+                    <label for="input-bottomID"> Bottom </label>
+                    <select name="bottomID" id="bottomID">
+                        <option value="">Select Bottoms</option>
+                        {{#each bottoms}}
+                        <option value="{{this.bottom_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+
+                    <label for="input-shoeID"> Shoes </label>
+                    <select name="shoeID" id="shoeID">
+                        <option value="">Select Shoes</option>
+                        {{#each shoes}}
+                        <option value="{{this.shoe_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label> Jackets </label>
+                    <select name="jacketID" id="jacketID">
+                        <option value="NULL"L>Select a Jacket</option>
+                        {{#each jackets}}
+                        <option value="{{this.jacket_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>
+
+                    <label for="input-formality"> Formality </label> 
+                    <input type="text" name="formality" placeholder="e.g. business casual"><br>
+            
+                    <label> Last Worn </label> <input type="date" name="lastWorn"><br>
+                    <label> Accessories:</label>
+                        {{#each accessories}}
+                        <label><input type="checkbox" name="updateAccessory" value="{{this.accessory_id}}">{{this.name}}</label>
+                        {{/each}}
+
+                    <label> Occasion(s):</label>
+                        {{#each occasions}}
+                        <label><input type="checkbox" name="updateOccasion" value="{{this.occasion_id}}">{{this.name}}</label>
+                        {{/each}}
+                </fieldset>
+                <input class="btn" type="submit" id="updateOutfit" value="Update Outfit">
+                <input class="btn" type="button" value="cancel">
+            </form>
+        </div>
+
+        <p>&nbsp;</p>
+        <div id="delete" style="display: block">
+        <form id="deleteOutfit" method="POST" action="/delete-outfit">
+            <legend><strong>Delete Outfit (Working)</strong></legend>
+                <fieldset class="fields">
+                <p>Are you sure you wish to delete the following?</p>
+                <label>Outfit ID</label>
+                <select name="deleteOutfitID" id="deleteOutfitID">
+                    <option value="">Select Outfit</option>
+                    {{#each data}}
+                    <option value="{{this.outfit_id}}">{{this.name}}</option>
+                    {{/each}}
+                </select><br>
+                    
+            </fieldset>
+            <input class="btn" type="submit" id="DeleteOutfit" value="Delete Outfit">
+            <input class="btn" type="button" value="cancel" >
+        </form> 
+        </div>
+	</body>
+</html>
