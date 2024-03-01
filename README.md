@@ -6,8 +6,7 @@ Our website is a personal outfit manager where users can create an account that 
 ## Installation
 
 # Clone the repository:
-```
-bash
+bash ```
   git clone https://github.com/your_username/your_repository.git
 ```
 
@@ -15,14 +14,11 @@ bash
 cd your_repository
 
 # Install dependencies:
-```
-bash
-  npm install
-```
+bash ```
+  npm install```
 
 # Start the server:
-```
-bash
+bash ```
   node app.js
 ```
 
