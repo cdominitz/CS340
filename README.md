@@ -3,6 +3,29 @@
 ## Overview
 Our website is a personal outfit manager where users can create an account that holds a digital collection of their closet. Users can add their tops, bottoms, shoes, jackets, and accessories as individual items and create outfits using these items. Outfits may also be linked to specific occasions.
 
+## Installation
+
+# Clone the repository:
+```
+bash
+  git clone https://github.com/your_username/your_repository.git
+```
+
+# Navigate to the project directory:
+cd your_repository
+
+# Install dependencies:
+```
+bash
+  npm install
+```
+
+# Start the server:
+```
+bash
+  node app.js
+```
+
 ## Database Outline
 <img width="468" alt="image" src="https://github.com/cdominitz/CS340/assets/107890151/ddce3dd0-8232-4dcf-b115-ef3a65d1b49a">
 
@@ -49,16 +72,6 @@ Our website is a personal outfit manager where users can create an account that 
 - OutfitsOccasions:
 
   <img width="283" alt="image" src="https://github.com/cdominitz/CS340/assets/107890151/bffd5d0e-6acb-441f-84fe-f959fb67fe1b">
-
-## Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your_username/your_repository.git
-   ```
-2. Open the project in your preferred PHP development environment (e.g., XAMPP, WAMP).
-3. Import the database schema into your MySQL database using PHPMyAdmin or command line.
-4. Update the PHP files with your MySQL database connection details.
-5. Start the PHP development server.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
