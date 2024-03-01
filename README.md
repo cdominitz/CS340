@@ -5,39 +5,39 @@ Our website is a personal outfit manager where users can create an account that 
 
 ## Installation
 
-# Clone the repository:
+### Clone the repository:
 ```bash
 git clone https://github.com/your_username/your_repository.git
 ```
 
-# Navigate to the project directory:
+### Navigate to the project directory:
 ```bash
 cd your_repository
 ```
 
-# Install dependencies:
+### Install dependencies:
 ```bash
 npm install
 ```
 
-# Install and run the DDL (Data Definition Language) SQL file to create the database schema:
+### Install and run the DDL (Data Definition Language) SQL file to create the database schema:
 ```bash
 mysql -u your_username -p your_database_name < database/DDL.sql
 ```
 
-# Install and run the DML (Data Manipulation Language) SQL file to populate the database with initial data:
+### Install and run the DML (Data Manipulation Language) SQL file to populate the database with initial data:
 ```bash
 mysql -u your_username -p your_database_name < database/DML.sql
 ```
 
-# Update database connection details in the db-connector.js file:
-# Modify the following variables in db-connector.js:
+### Update database connection details in the db-connector.js file:
+  Modify the following variables in db-connector.js:
   - host
   - user
   - password
   - database
 
-# Start the server:
+### Start the server:
 ```bash
   node app.js
 ```
