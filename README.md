@@ -7,8 +7,7 @@ Our website is a personal outfit manager where users can create an account that 
 
 # Clone the repository:
 bash ```
-  git clone https://github.com/your_username/your_repository.git
-```
+git clone https://github.com/your_username/your_repository.git```
 
 # Navigate to the project directory:
 cd your_repository
