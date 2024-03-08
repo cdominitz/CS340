@@ -27,6 +27,15 @@ const pool = new Pool({
     }
   });
 
+// Test the connection
+pool.query('SELECT NOW()', (err, res) => {
+    if (err) {
+      console.error('Error connecting to the database', err);
+    } else {
+      console.log('Connected to the database');
+    }
+  });
+
 module.exports = pool;
 
 // Export it for use in our application
