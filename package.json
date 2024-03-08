@@ -14,7 +14,9 @@
     "forever": "^4.0.3",
     "handlebars": "^4.7.8",
     "mysql": "^2.18.1",
-    "pm2": "^5.3.0"
+    "pg": "^8.11.3",
+    "pm2": "^5.3.0",
+    "psql": "^0.0.1"
   },
   "description": "## Overview Our website is a personal outfit manager where users can create an account that holds a digital collection of their closet. Users can add their tops, bottoms, shoes, jackets, and accessories as individual items and create outfits using these items. Outfits may also be linked to specific occasions.",
   "devDependencies": {

@@ -18,17 +18,16 @@
         dmgs11
 */
 
-// Get an instance of mysql we can use in the app
-var mysql = require('mysql')
+const { Pool } = require('pg');
 
-// Create a 'connection pool' using the provided credentials
-var pool = mysql.createPool({
-    connectionLimit : 10,
-    host            : '<your host>>',
-    user            : '<your username>',
-    password        : '<your password>',
-    database        : '<your database>'
-})
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL, // Use the DATABASE_URL environment variable provided by Heroku
+  ssl: {
+    rejectUnauthorized: false, // Allow self-signed certificates (remove in production)
+  },
+});
+
+module.exports = pool;
 
 // Export it for use in our application
 module.exports.pool = pool;
