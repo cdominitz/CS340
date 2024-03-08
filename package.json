@@ -1,9 +1,10 @@
 {
-  "name": "portfolio_proj",
+  "name": "db-outift-manager",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Calista Dominitz",
   "license": "ISC",
@@ -15,8 +16,12 @@
     "mysql": "^2.18.1",
     "pm2": "^5.3.0"
   },
-  "description": "",
+  "description": "## Overview Our website is a personal outfit manager where users can create an account that holds a digital collection of their closet. Users can add their tops, bottoms, shoes, jackets, and accessories as individual items and create outfits using these items. Outfits may also be linked to specific occasions.",
   "devDependencies": {
     "gh-pages": "^6.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "outfit-db-manager"
   }
 }
