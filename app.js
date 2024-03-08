@@ -33,14 +33,7 @@ app.use(express.static('public'))
 PORT = process.env.PORT || 4895; // Use the port provided by Heroku or fallback to 4895
 
 // Database
-const { Pool } = require('pg');
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+var db = require('./database/db-connector');
 
 // Handlebars
 const { engine } = require('express-handlebars');
