@@ -74,7 +74,7 @@
         <p>&nbsp;</p>
         <div id="update" style="display: block">
             <form id="updateUser" method="POST" action="/update-user">
-                <legend><strong>Update User (Working)</strong></legend>
+                <legend><strong>Update User</strong></legend>
                 <fieldset class="fields">
                     <label>User ID</label>
                     <p>Select the user you wish to update</p>
@@ -105,7 +105,7 @@
         <p>&nbsp;</p>
         <div id="delete" style="display: block">
             <form id="deleteUserID" method="POST" action="/delete-user">
-            <legend><strong>Delete User (Working)</strong></legend>
+            <legend><strong>Delete User</strong></legend>
                 <fieldset class="fields">
                 <p>Select the user you wish to delete</p>
                 <select name="deleteUserID" id="deleteUserID">
@@ -120,29 +120,5 @@
             <input class="btn" type="button" value="cancel" >
         </form> 
         </div>
-
-        <script type="text/javascript">
-
-
-        function populate()
-        {
-            selected_id = document.getElementById("updateUserID").value
-            if (selected_id != "") 
-            {
-                values = 0
-                rows = document.getElementById("table_data").getElementsByTagName("tr")
-                for (i = 0; i < rows.length; i++) 
-                {
-                    one_row = rows[i].getElementsByTagName("td")
-                    if (one_row[0].innerText == selected_id) {values = rows[i].getElementsByTagName("td")}
-                }
-                
-                fields = document.getElementById("updateUser").getElementsByTagName("input")
-                for (i = 0; i < values.length - 1; i++) {fields[i].value = values[i+1].innerText}
-            }
-        }
-
-        document.getElementById("updateUserID").addEventListener("click", populate)
-        </script>
     </body>
 </html>

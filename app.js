@@ -46,10 +46,10 @@ app.set('view engine', '.hbs');                 // Tell express to use the handl
 /*
     ROUTES
 */
+// Pages
 app.get('/', function(req, res)
     {
         res.render('index');
-
     });
 
 app.get('/users', function(req, res)
@@ -63,8 +63,6 @@ app.get('/users', function(req, res)
             }
         });
     });
-
-    
 
 // Populate dropdowns for all items in outfits
 app.get('/outfits', function(req, res) {
@@ -110,8 +108,150 @@ app.get('/outfits', function(req, res) {
             })
         })
     })
-});
+    });
 
+app.get('/tops', function(req, res)
+    {
+        let query1 = `SELECT * FROM Tops;`;                    // Define query
+        let query2 = `SELECT * FROM Users`;
+        db.pool.query(query2, function(error, rows, fields){   // execute query
+            let users = rows;
+
+            db.pool.query(query1, function(error, rows, fields){
+                let tops = rows;
+                res.render('tops', {data: tops, users: users});
+            })
+         })
+    });
+
+app.get('/tops', function(req, res)
+{
+    let query1 = `SELECT * FROM Tops;`;                    // Define query
+    let query2 = `SELECT * FROM Users`;
+    db.pool.query(query2, function(error, rows, fields){   // execute query
+        let users = rows;
+
+        db.pool.query(query1, function(error, rows, fields){
+            let tops = rows;
+            res.render('tops', {data: tops, users: users});
+        })
+        })
+    });
+
+app.get('/bottoms', function(req, res)
+    {
+        let query1 = `SELECT * FROM Bottoms;`;                  // Define query
+        let query2 = `SELECT * FROM Users`;
+        db.pool.query(query2, function(error, rows, fields){   // execute query
+            let users = rows;
+
+            db.pool.query(query1, function(error, rows, fields){
+                let bottoms = rows;
+                res.render('bottoms', {data: bottoms, users: users});
+            })
+            })
+    });
+
+app.get('/shoes', function(req, res)
+    {
+        let query1 = `SELECT * FROM Shoes;`;                    // Define query
+        let query2 = `SELECT * FROM Users`;
+        db.pool.query(query2, function(error, rows, fields){   // execute query
+            let users = rows;
+
+            db.pool.query(query1, function(error, rows, fields){
+                let shoes = rows;
+                res.render('shoes', {data: shoes, users: users});
+            })
+        })
+    });
+
+app.get('/jackets', function(req, res)
+    {
+        let query1 = `SELECT * FROM Jackets;`;                 // Define query
+        let query2 = `SELECT * FROM Users`
+        db.pool.query(query2, function(error, rows, fields){   // execute query
+            let users = rows;
+
+            db.pool.query(query1, function(error, rows, fields){
+                let jackets = rows;
+                res.render('jackets', {data: jackets, users: users});
+            })
+        })
+    });
+
+app.get('/accessories', function(req, res)
+    {
+        let query1 = `SELECT * FROM Accessories;`;             // Define query
+        let query2 = `SELECT * FROM Users;`;
+        db.pool.query(query2, function(error, rows, fields){   // execute query
+            let users = rows;
+
+            db.pool.query(query1, function(error, rows, fields){
+                let accessories = rows;
+                res.render('accessories', {data: accessories, users: users});
+            })
+        })
+    });
+
+app.get('/occasions', function(req, res)
+    {
+        let query1 = `SELECT * FROM Occasions;`;               // Define query
+        let query2 = `SELECT * FROM Users;`;
+        db.pool.query(query2, function(error, rows, fields){   // execute query
+            let users = rows;
+
+            db.pool.query(query1, function(error, rows, fields){
+                let occasions = rows;
+                res.render('occasions', {data: occasions, users: users});
+            })
+        })
+    });
+
+app.get('/outfitsOccasions', function(req, res)
+    {
+        let query1 = `SELECT OutfitsOccasions.outfit_occ_id, Outfits.name as outfit, 
+                    Occasions.name as occasion FROM OutfitsOccasions JOIN Outfits ON 
+                    OutfitsOccasions.outfit_id = Outfits.outfit_id JOIN Occasions ON 
+                    OutfitsOccasions.occasion_id = Occasions.occasion_id;`;
+        let query2 = `SELECT * FROM Outfits;`;  
+        let query3 = `SELECT * FROM Occasions;`;
+        db.pool.query(query3, function(error, rows, fields){  
+            let occasions = rows
+            
+            db.pool.query(query2, function(error, rows, fields){ 
+                let outfits = rows
+
+                db.pool.query(query1, function(error, rows, fields){  
+                    res.render('outfitsOccasions', {data: rows, outfits: outfits, occasions: occasions});
+                })
+            })
+        })
+    });
+    
+app.get('/outfitsAccessories', function(req, res)
+    {
+        let query1 = `SELECT OutfitsAccessories.outfit_acc_id, Outfits.name as outfit,
+                    Accessories.name as accessory FROM OutfitsAccessories JOIN Outfits 
+                    ON OutfitsAccessories.outfit_id = Outfits.outfit_id JOIN Accessories 
+                    ON OutfitsAccessories.accessory_id = Accessories.accessory_id 
+                    ORDER BY OutfitsAccessories.outfit_acc_id;`;
+        let query2 = `SELECT * FROM Outfits;`;
+        let query3 = `SELECT * FROM Accessories;`;   
+        db.pool.query(query3, function(error, rows, fields){                  
+            let accessories = rows;
+
+            db.pool.query(query2, function(error, rows, fields){ 
+                let outfits = rows
+
+                db.pool.query(query1, function(error, rows, fields){  
+                    res.render('outfitsAccessories', {data: rows, outfits: outfits, accessories: accessories});
+                })
+            })
+        })
+    });
+
+// Add Item
 app.post('/add-outfit', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
@@ -165,7 +305,361 @@ app.post('/add-outfit', function(req, res) {
             res.redirect('/outfits');
         }
     })
-}); 
+    }); 
+
+app.post('/add-user', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    user = `INSERT INTO Users (first_name, last_name, email, password) 
+            VALUES ('${data.firstName}', '${data.lastName}', '${data.email}', '${data.password}')`;
+    db.pool.query(user, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else{
+            // If there was no error, perform a SELECT * on users
+            all_users = `SELECT * FROM Users;`;
+            db.pool.query(all_users, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // send the results of the query back.
+                else{
+                    res.redirect('/users');
+                }
+            })
+        }
+    })
+    });
+
+app.post('/add-top', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        top = `INSERT INTO Tops (user_id, name, type, color)
+                VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
+        db.pool.query(top, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else{
+                // If there was no error, perform a SELECT * on Tops
+                all_tops = `SELECT * FROM Tops;`;
+                db.pool.query(all_tops, function(error, rows, fields){
+    
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    // send the results of the query back.
+                    else{
+                        res.redirect('/tops');
+                    }
+                })
+            }
+        })
+    });
+
+app.post('/add-bottom', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        bottom = `INSERT INTO Bottoms (user_id, name, type, color)
+                VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
+        db.pool.query(bottom, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else{
+                // If there was no error, perform a SELECT * on Tops
+                all_bottoms = `SELECT * FROM Bottoms;`;
+                db.pool.query(all_bottoms, function(error, rows, fields){
+    
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    // send the results of the query back.
+                    else{
+                        res.redirect('/bottoms');
+                    }
+                })
+            }
+        })
+    });
+
+app.post('/add-shoe', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    shoe = `INSERT INTO Shoes (user_id, name, type, color)
+            VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
+    db.pool.query(shoe, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else{
+            // If there was no error, perform a SELECT * on Tops
+            all_shoes = `SELECT * FROM Shoes;`;
+            db.pool.query(all_shoes, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // send the results of the query back.
+                else{
+                    res.redirect('/shoes');
+                }
+            })
+        }
+    })
+    });
+
+app.post('/add-jacket', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        jacket = `INSERT INTO Jackets (user_id, name, type, color)
+                VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
+        db.pool.query(jacket, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else{
+                // If there was no error, perform a SELECT * on Tops
+                all_jackets = `SELECT * FROM Jackets;`;
+                db.pool.query(all_jackets, function(error, rows, fields){
+    
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    // send the results of the query back.
+                    else{
+                        res.redirect('/jackets');
+                    }
+                })
+            }
+        })
+    });
+
+app.post('/add-accessory', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        accessories = `INSERT INTO Accessories (user_id, name, type, color)
+                VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
+        db.pool.query(accessories, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else{
+                // If there was no error, perform a SELECT * on Tops
+                all_accessories = `SELECT * FROM Accessories;`;
+                db.pool.query(all_accessories, function(error, rows, fields){
+    
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    // send the results of the query back.
+                    else{
+                        res.redirect('/accessories');
+                    }
+                })
+            }
+        })
+    });
+
+app.post('/add-occasion', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        occasions = `INSERT INTO Occasions (user_id, name, formality)
+                VALUES ('${data.addUserID}', '${data.name}', '${data.formality}')`;
+        db.pool.query(occasions, function(error, rows, fields){
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else{
+                // If there was no error, perform a SELECT * on Tops
+                all_occasions = `SELECT * FROM Occasions;`;
+                db.pool.query(all_occasions, function(error, rows, fields){
+    
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    // send the results of the query back.
+                    else{
+                        res.redirect('/occasions');
+                    }
+                })
+            }
+        })
+    });
+
+app.post('/add-outfitsOccasions', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        intersection = `INSERT INTO OutfitsOccasions (outfit_id, occasion_id)
+                VALUES ('${data.addOutfitID}', '${data.addOccasionID}')`;
+
+        db.pool.query(intersection, function(error, rows, fields){
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else{
+                // If there was no error, perform a SELECT * on Tops
+                all_intersections =  `SELECT OutfitsOccasions.outfit_occ_id, Outfits.name as outfit, 
+                                    Occasions.name as occasion FROM OutfitsOccasions JOIN Outfits ON 
+                                    OutfitsOccasions.outfit_id = Outfits.outfit_id JOIN Occasions ON 
+                                    OutfitsOccasions.occasion_id = Occasions.occasion_id;`;
+                db.pool.query(all_intersections, function(error, rows, fields){
+    
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    // send the results of the query back.
+                    else{
+                        res.redirect('/outfitsOccasions');
+                    }
+                })
+            }
+        })
+    });
+
+app.post('/add-outfitsAccessories', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        intersection = `INSERT INTO OutfitsAccessories (outfit_id, accessory_id)
+                VALUES ('${data.addOutfitID}', '${data.addAccessoryID}')`;
+
+        db.pool.query(intersection, function(error, rows, fields){
+            // Check to see if there was an error
+            if (error) {
+    
+                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+                console.log(error)
+                res.sendStatus(400);
+            }
+            else{
+                // If there was no error, perform a SELECT * on Tops
+                all_intersections =  `SELECT OutfitsAccessories.outfit_acc_id, Outfits.name as outfit,
+                                    Accessories.name as accessory FROM OutfitsAccessories JOIN Outfits 
+                                    ON OutfitsAccessories.outfit_id = Outfits.outfit_id JOIN Accessories 
+                                    ON OutfitsAccessories.accessory_id = Accessories.accessory_id 
+                                    ORDER BY OutfitsAccessories.outfit_acc_id;`;
+                db.pool.query(all_intersections, function(error, rows, fields){
+    
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    // send the results of the query back.
+                    else{
+                        res.redirect('/outfitsAccessories');
+                    }
+                })
+            }
+        })
+    });
+
+// Update Item
+app.post('/update-user', function(req, res) 
+{
+    let data = req.body;
+
+    let update_user = `UPDATE Users SET first_name = '${data.firstName}', last_name = '${data.lastName}', 
+        email = '${data.email}', password = '${data.password}' WHERE user_id = ${data.updateUserID};`;
+
+    db.pool.query(update_user, function(error, rows, fields){
+        // Check to see if there was an error
+        if (error) {
+            // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+        else{
+            // If there was no error, perform a SELECT * on users
+            all_users = `SELECT * FROM Users;`;
+            db.pool.query(all_users, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // send the results of the query back.
+                else{
+                    res.redirect('/users');
+                }
+            })
+        }
+    })
+});
 
 app.post('/update-outfit', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
@@ -225,6 +719,38 @@ app.post('/update-outfit', function(req, res) {
 })
 });  
 
+
+// Delete Item
+app.post('/delete-item/:tableName', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+        let tableName = req.params.tableName;
+        let idName = data.idName;
+    
+        // Create the query and run it on the database
+        query = `DELETE FROM ${tableName} WHERE ${idName} = ${data.deleteItemID}`;
+        db.pool.query(query, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+                console.log(error)
+                res.sendStatus(400);}
+            else{
+                all_items = `SELECT * FROM ${tableName};`;
+                db.pool.query(all_items, function(error, rows, fields){
+    
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);}
+                    else{
+                            res.redirect(`/${tableName.toLowerCase()}`);
+                    }
+                })
+            }
+        })
+    });
+    
 app.post('/delete-outfit', function(req, res) 
 {
 // Capture the incoming data and parse it back to a JS object
@@ -245,349 +771,7 @@ db.pool.query(outfit, function(error, rows, fields){
         res.redirect('/outfits');
     }
 })
-}); 
-
-app.post('/add-user', function(req, res) 
-{
-    // Capture the incoming data and parse it back to a JS object
-    let data = req.body;
-
-    // Create the query and run it on the database
-    user = `INSERT INTO Users (first_name, last_name, email, password) 
-            VALUES ('${data.firstName}', '${data.lastName}', '${data.email}', '${data.password}')`;
-    db.pool.query(user, function(error, rows, fields){
-
-        // Check to see if there was an error
-        if (error) {
-
-            // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-            console.log(error)
-            res.sendStatus(400);
-        }
-        else{
-            // If there was no error, perform a SELECT * on users
-            all_users = `SELECT * FROM Users;`;
-            db.pool.query(all_users, function(error, rows, fields){
-
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                }
-                // send the results of the query back.
-                else{
-                    res.redirect('/users');
-                }
-            })
-        }
-    })
 });
-
-app.post('/update-user', function(req, res) 
-{
-    let data = req.body;
-
-    let update_user = `UPDATE Users SET first_name = '${data.firstName}', last_name = '${data.lastName}', 
-        email = '${data.email}', password = '${data.password}' WHERE user_id = ${data.updateUserID};`;
-
-    db.pool.query(update_user, function(error, rows, fields){
-        // Check to see if there was an error
-        if (error) {
-            // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-            console.log(error);
-            res.sendStatus(400);
-        }
-        else{
-            // If there was no error, perform a SELECT * on users
-            all_users = `SELECT * FROM Users;`;
-            db.pool.query(all_users, function(error, rows, fields){
-
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                }
-                // send the results of the query back.
-                else{
-                    res.redirect('/users');
-                }
-            })
-        }
-    })
-});
-
-app.post('/delete-user', function(req, res) 
-{
-    // Capture the incoming data and parse it back to a JS object
-    let data = req.body;
-
-    // Create the query and run it on the database
-    user = `DELETE FROM Users WHERE user_id = ${data.deleteUserID}`;
-    db.pool.query(user, function(error, rows, fields){
-
-        // Check to see if there was an error
-        if (error) {
-            console.log(error)
-            res.sendStatus(400);}
-        else{
-            all_users = `SELECT * FROM Users;`;
-            db.pool.query(all_users, function(error, rows, fields){
-
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);}
-                else{ 
-                    res.redirect('/users');}
-            })
-        }
-    })
-});
-
-app.get('/tops', function(req, res)
-    {
-        let query1 = `SELECT * FROM Tops;`;                    // Define query
-        let query2 = `SELECT * FROM Users`;
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
-
-            db.pool.query(query1, function(error, rows, fields){
-                let tops = rows;
-                res.render('tops', {data: tops, users: users});
-            })
-         })
-    });
-
-app.post('/add-top', function(req, res) 
-    {
-        // Capture the incoming data and parse it back to a JS object
-        let data = req.body;
-    
-        // Create the query and run it on the database
-        top = `INSERT INTO Tops (user_id, name, type, color)
-                VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
-        db.pool.query(top, function(error, rows, fields){
-    
-            // Check to see if there was an error
-            if (error) {
-    
-                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error)
-                res.sendStatus(400);
-            }
-            else{
-                // If there was no error, perform a SELECT * on Tops
-                all_tops = `SELECT * FROM Tops;`;
-                db.pool.query(all_tops, function(error, rows, fields){
-    
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    }
-                    // send the results of the query back.
-                    else{
-                        res.redirect('/tops');
-                    }
-                })
-            }
-        })
-    });
-    
-
-app.get('/bottoms', function(req, res)
-    {
-        let query1 = `SELECT * FROM Bottoms;`;                  // Define query
-        let query2 = `SELECT * FROM Users`;
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
-
-            db.pool.query(query1, function(error, rows, fields){
-                let bottoms = rows;
-                res.render('bottoms', {data: bottoms, users: users});
-            })
-            })
-    });
-
-app.post('/add-bottom', function(req, res) 
-    {
-        // Capture the incoming data and parse it back to a JS object
-        let data = req.body;
-    
-        // Create the query and run it on the database
-        bottom = `INSERT INTO Bottoms (user_id, name, type, color)
-                VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
-        db.pool.query(bottom, function(error, rows, fields){
-    
-            // Check to see if there was an error
-            if (error) {
-    
-                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error)
-                res.sendStatus(400);
-            }
-            else{
-                // If there was no error, perform a SELECT * on Tops
-                all_bottoms = `SELECT * FROM Bottoms;`;
-                db.pool.query(all_bottoms, function(error, rows, fields){
-    
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    }
-                    // send the results of the query back.
-                    else{
-                        res.redirect('/bottoms');
-                    }
-                })
-            }
-        })
-    });
-
-app.get('/shoes', function(req, res)
-    {
-        let query1 = `SELECT * FROM Shoes;`;                    // Define query
-        let query2 = `SELECT * FROM Users`;
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
-
-            db.pool.query(query1, function(error, rows, fields){
-                let shoes = rows;
-                res.render('shoes', {data: shoes, users: users});
-            })
-        })
-    });
-
-app.post('/add-shoe', function(req, res) 
-    {
-        // Capture the incoming data and parse it back to a JS object
-        let data = req.body;
-    
-        // Create the query and run it on the database
-        shoe = `INSERT INTO Shoes (user_id, name, type, color)
-                VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
-        db.pool.query(shoe, function(error, rows, fields){
-    
-            // Check to see if there was an error
-            if (error) {
-    
-                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error)
-                res.sendStatus(400);
-            }
-            else{
-                // If there was no error, perform a SELECT * on Tops
-                all_shoes = `SELECT * FROM Shoes;`;
-                db.pool.query(all_shoes, function(error, rows, fields){
-    
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    }
-                    // send the results of the query back.
-                    else{
-                        res.redirect('/shoes');
-                    }
-                })
-            }
-        })
-    });
-
-app.get('/jackets', function(req, res)
-    {
-        let query1 = `SELECT * FROM Jackets;`;                 // Define query
-        let query2 = `SELECT * FROM Users`
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
-
-            db.pool.query(query1, function(error, rows, fields){
-                let jackets = rows;
-                res.render('jackets', {data: jackets, users: users});
-            })
-        })
-    });
-
-app.post('/add-jacket', function(req, res) 
-    {
-        // Capture the incoming data and parse it back to a JS object
-        let data = req.body;
-    
-        // Create the query and run it on the database
-        jacket = `INSERT INTO Jackets (user_id, name, type, color)
-                VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
-        db.pool.query(jacket, function(error, rows, fields){
-    
-            // Check to see if there was an error
-            if (error) {
-    
-                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error)
-                res.sendStatus(400);
-            }
-            else{
-                // If there was no error, perform a SELECT * on Tops
-                all_jackets = `SELECT * FROM Jackets;`;
-                db.pool.query(all_jackets, function(error, rows, fields){
-    
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    }
-                    // send the results of the query back.
-                    else{
-                        res.redirect('/jackets');
-                    }
-                })
-            }
-        })
-    });
-
-
-
-app.get('/accessories', function(req, res)
-    {
-        let query1 = `SELECT * FROM Accessories;`;             // Define query
-        let query2 = `SELECT * FROM Users;`;
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
-
-            db.pool.query(query1, function(error, rows, fields){
-                let accessories = rows;
-                res.render('accessories', {data: accessories, users: users});
-            })
-        })
-    });
-
-app.post('/add-accessory', function(req, res) 
-    {
-        // Capture the incoming data and parse it back to a JS object
-        let data = req.body;
-    
-        // Create the query and run it on the database
-        accessories = `INSERT INTO Accessories (user_id, name, type, color)
-                VALUES ('${data.addUserID}', '${data.name}', '${data.type}', '${data.color}')`;
-        db.pool.query(accessories, function(error, rows, fields){
-    
-            // Check to see if there was an error
-            if (error) {
-    
-                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error)
-                res.sendStatus(400);
-            }
-            else{
-                // If there was no error, perform a SELECT * on Tops
-                all_accessories = `SELECT * FROM Accessories;`;
-                db.pool.query(all_accessories, function(error, rows, fields){
-    
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    }
-                    // send the results of the query back.
-                    else{
-                        res.redirect('/accessories');
-                    }
-                })
-            }
-        })
-    });
 
 app.post('/delete-accessory', function(req, res) 
     {
@@ -616,179 +800,34 @@ app.post('/delete-accessory', function(req, res)
             }
         })
     });
-    
 
+app.post('/delete-user', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
 
-app.get('/occasions', function(req, res)
-    {
-        let query1 = `SELECT * FROM Occasions;`;               // Define query
-        let query2 = `SELECT * FROM Users;`;
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
+    // Create the query and run it on the database
+    user = `DELETE FROM Users WHERE user_id = ${data.deleteUserID}`;
+    db.pool.query(user, function(error, rows, fields){
 
-            db.pool.query(query1, function(error, rows, fields){
-                let occasions = rows;
-                res.render('occasions', {data: occasions, users: users});
+        // Check to see if there was an error
+        if (error) {
+            console.log(error)
+            res.sendStatus(400);}
+        else{
+            all_users = `SELECT * FROM Users;`;
+            db.pool.query(all_users, function(error, rows, fields){
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);}
+                else{ 
+                    res.redirect('/users');}
             })
-        })
-    });
-
-app.post('/add-occasion', function(req, res) 
-    {
-        // Capture the incoming data and parse it back to a JS object
-        let data = req.body;
+        }
+    })
+});
     
-        // Create the query and run it on the database
-        occasions = `INSERT INTO Occasions (user_id, name, formality)
-                VALUES ('${data.addUserID}', '${data.name}', '${data.formality}')`;
-        db.pool.query(occasions, function(error, rows, fields){
-            // Check to see if there was an error
-            if (error) {
-    
-                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error)
-                res.sendStatus(400);
-            }
-            else{
-                // If there was no error, perform a SELECT * on Tops
-                all_occasions = `SELECT * FROM Occasions;`;
-                db.pool.query(all_occasions, function(error, rows, fields){
-    
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    }
-                    // send the results of the query back.
-                    else{
-                        res.redirect('/occasions');
-                    }
-                })
-            }
-        })
-    });
-
-
-app.get('/outfitsOccasions', function(req, res)
-    {
-        let query1 = `SELECT OutfitsOccasions.outfit_occ_id, Outfits.name as outfit, 
-                    Occasions.name as occasion FROM OutfitsOccasions JOIN Outfits ON 
-                    OutfitsOccasions.outfit_id = Outfits.outfit_id JOIN Occasions ON 
-                    OutfitsOccasions.occasion_id = Occasions.occasion_id;`;
-        let query2 = `SELECT * FROM Outfits;`;  
-        let query3 = `SELECT * FROM Occasions;`;
-        db.pool.query(query3, function(error, rows, fields){  
-            let occasions = rows
-            
-            db.pool.query(query2, function(error, rows, fields){ 
-                let outfits = rows
-
-                db.pool.query(query1, function(error, rows, fields){  
-                    res.render('outfitsOccasions', {data: rows, outfits: outfits, occasions: occasions});
-                })
-            })
-        })
-    });
-
-app.post('/add-outfitsOccasions', function(req, res) 
-    {
-        // Capture the incoming data and parse it back to a JS object
-        let data = req.body;
-    
-        // Create the query and run it on the database
-        intersection = `INSERT INTO OutfitsOccasions (outfit_id, occasion_id)
-                VALUES ('${data.addOutfitID}', '${data.addOccasionID}')`;
-
-        db.pool.query(intersection, function(error, rows, fields){
-            // Check to see if there was an error
-            if (error) {
-    
-                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error)
-                res.sendStatus(400);
-            }
-            else{
-                // If there was no error, perform a SELECT * on Tops
-                all_intersections =  `SELECT OutfitsOccasions.outfit_occ_id, Outfits.name as outfit, 
-                                    Occasions.name as occasion FROM OutfitsOccasions JOIN Outfits ON 
-                                    OutfitsOccasions.outfit_id = Outfits.outfit_id JOIN Occasions ON 
-                                    OutfitsOccasions.occasion_id = Occasions.occasion_id;`;
-                db.pool.query(all_intersections, function(error, rows, fields){
-    
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    }
-                    // send the results of the query back.
-                    else{
-                        res.redirect('/outfitsOccasions');
-                    }
-                })
-            }
-        })
-    });
-    
-app.get('/outfitsAccessories', function(req, res)
-    {
-        let query1 = `SELECT OutfitsAccessories.outfit_acc_id, Outfits.name as outfit,
-                    Accessories.name as accessory FROM OutfitsAccessories JOIN Outfits 
-                    ON OutfitsAccessories.outfit_id = Outfits.outfit_id JOIN Accessories 
-                    ON OutfitsAccessories.accessory_id = Accessories.accessory_id 
-                    ORDER BY OutfitsAccessories.outfit_acc_id;`;
-        let query2 = `SELECT * FROM Outfits;`;
-        let query3 = `SELECT * FROM Accessories;`;   
-        db.pool.query(query3, function(error, rows, fields){                  
-            let accessories = rows;
-
-            db.pool.query(query2, function(error, rows, fields){ 
-                let outfits = rows
-
-                db.pool.query(query1, function(error, rows, fields){  
-                    res.render('outfitsAccessories', {data: rows, outfits: outfits, accessories: accessories});
-                })
-            })
-        })
-    });
-
-app.post('/add-outfitsAccessories', function(req, res) 
-    {
-        // Capture the incoming data and parse it back to a JS object
-        let data = req.body;
-    
-        // Create the query and run it on the database
-        intersection = `INSERT INTO OutfitsAccessories (outfit_id, accessory_id)
-                VALUES ('${data.addOutfitID}', '${data.addAccessoryID}')`;
-
-        db.pool.query(intersection, function(error, rows, fields){
-            // Check to see if there was an error
-            if (error) {
-    
-                // Log the error to the terminal, and send the visitor an HTTP response 400 indicating it was a bad request.
-                console.log(error)
-                res.sendStatus(400);
-            }
-            else{
-                // If there was no error, perform a SELECT * on Tops
-                all_intersections =  `SELECT OutfitsAccessories.outfit_acc_id, Outfits.name as outfit,
-                                    Accessories.name as accessory FROM OutfitsAccessories JOIN Outfits 
-                                    ON OutfitsAccessories.outfit_id = Outfits.outfit_id JOIN Accessories 
-                                    ON OutfitsAccessories.accessory_id = Accessories.accessory_id 
-                                    ORDER BY OutfitsAccessories.outfit_acc_id;`;
-                db.pool.query(all_intersections, function(error, rows, fields){
-    
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    }
-                    // send the results of the query back.
-                    else{
-                        res.redirect('/outfitsAccessories');
-                    }
-                })
-            }
-        })
-    });
-
-
 /*
     LISTENER
 */

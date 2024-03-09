@@ -103,43 +103,23 @@
 
         <p>&nbsp;</p>
         <div id="delete" style="display: block">
-        <form id="deleteUser">
-            <legend><strong>Delete Top</strong></legend>
+            <form id="deleteItemForm" method="POST" action="/delete-item/Tops">
+                <input type="hidden" name="tableName" value="Tops">
+                <input type="hidden" name="idName" value="top_id">
+                <legend><strong>Delete Top</strong></legend>
                 <fieldset class="fields">
-                <p>Are you sure you wish to delete the following?</p>
-                <label>Top ID</label>
-                <select name="deleteTopID" id="deleteTopID">
-                    {{#each data.rows}}
-                    <option value="{{this.top_id}}">{{this.name}}</option>
-                    {{/each}}
-                </select><br>
-                    
-            </fieldset>
-            <input class="btn" type="submit" id="DeleteTop" value="Delete Top">
-                <input class="btn" type="button" value="cancel" >
-        </form> 
+                    <p>Are you sure you wish to delete the following?</p>
+                    <label>Top ID</label>
+                    <select name="deleteItemID" id="deleteItemID">
+                        <option value="">Select Top</option>
+                        {{#each data.rows}}
+                        <option value="{{this.top_id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select><br>              
+                </fieldset>
+                <input class="btn" type="submit" value="Delete Top">
+                <input class="btn" type="button" value="cancel">
+            </form>
         </div>
-
-        <script type="text/javascript">
-function populate()
-{
-    selected_id = document.getElementById("updateTopID").value
-    if (selected_id != "") 
-    {
-        values = 0
-        rows = document.getElementById("table_data").getElementsByTagName("tr")
-        for (i = 0; i < rows.length; i++) 
-        {
-            one_row = rows[i].getElementsByTagName("td")
-            if (one_row[0].innerText == selected_id) {values = rows[i].getElementsByTagName("td")}
-        }
-        
-        fields = document.getElementById("updateTop").getElementsByTagName("input")
-        for (i = 0; i < values.length - 1; i++) {fields[i].value = values[i+1].innerText}
-    }
-}
-
-document.getElementById("updateTopID").addEventListener("click", populate)
-</script>
 	</body>
 </html>
