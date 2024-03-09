@@ -103,7 +103,7 @@
 
         <p>&nbsp;</p>
         <div id="delete" style="display: block">
-        <form id="DeleteAccessory">
+        <form id="deleteAccessoryID" method="POST" action="/delete-accessory">
             <legend><strong>Delete Accessory</strong></legend>
                 <fieldset class="fields">
                 <p>Are you sure you wish to delete the following?</p>
@@ -115,7 +115,7 @@
                     {{/each}}
                 </select><br>              
             </fieldset>
-            <input class="btn" type="submit" id="DeleteAccessory" value="Delete Accessory">
+            <input class="btn" type="submit" id="deleteAccessoryID" value="Delete Accessory">
                 <input class="btn" type="button" value="cancel">
         </form> 
         </div>

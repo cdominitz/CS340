@@ -589,6 +589,35 @@ app.post('/add-accessory', function(req, res)
         })
     });
 
+app.post('/delete-accessory', function(req, res) 
+    {
+        // Capture the incoming data and parse it back to a JS object
+        let data = req.body;
+    
+        // Create the query and run it on the database
+        accessory = `DELETE FROM Accessories WHERE accessory_id = ${data.deleteAccessoryID}`;
+        db.pool.query(accessory, function(error, rows, fields){
+    
+            // Check to see if there was an error
+            if (error) {
+                console.log(error)
+                res.sendStatus(400);}
+            else{
+                all_accessories = `SELECT * FROM Accessories;`;
+                db.pool.query(all_accessories, function(error, rows, fields){
+    
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);}
+                    else{
+                            res.redirect('/accessories');
+                    }
+                })
+            }
+        })
+    });
+    
+
 
 app.get('/occasions', function(req, res)
     {
