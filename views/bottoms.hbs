@@ -32,16 +32,16 @@
         <table id="bottoms">
             <thead>
                 <tr>
-                    {{#each data.[0]}}
+                    {{#each data.fields}}
                     <th>
-                        {{@key}}
+                        {{name}}
                     </th>
                     {{/each}}
                 </tr>
             </thead>
         
             <tbody>
-              {{#each data}}
+              {{#each data.rows}}
                 <tr>
                     <td>{{this.bottom_id}}</td>
                     <td>{{this.user_id}}</td>
@@ -62,7 +62,7 @@
                 <fieldset class="fields">
                     <label> User </label>
                     <select name="addUserID" id="addUserID">
-                        {{#each users}}
+                        {{#each users.rows}}
                         <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
                         {{/each}}
                     </select><br>
@@ -82,14 +82,14 @@
                 <fieldset class="fields">
                     <label>Bottom ID</label>
                     <select name="updateBottomID" id="updateBottomID">
-                        <option value="">Select a Bottom</option>
-                        {{#each data}}
+                        <option value=NULL>Select a Bottom</option>
+                        {{#each data.rows}}
                         <option value="{{this.bottom_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> User </label>
                     <select name="updateUserID" id="updateUserID">
-                        {{#each users}}
+                        {{#each users.rows}}
                         <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
                         {{/each}}
                     </select><br>
@@ -110,7 +110,7 @@
                 <p>Are you sure you wish to delete the following?</p>
                 <label>Bottom ID</label>
                 <select name="deleteBottomID" id="deleteBottomID">
-                    {{#each data}}
+                    {{#each data.rows}}
                     <option value="{{this.bottom_id}}">{{this.name}}</option>
                     {{/each}}
                 </select><br>

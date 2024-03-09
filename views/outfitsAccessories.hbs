@@ -34,16 +34,16 @@
         <table id="outfitAccessories">
             <thead>
                 <tr>
-                    {{#each data.[0]}}
+                    {{#each data.fields}}
                     <th>
-                        {{@key}}
+                        {{name}}
                     </th>
                     {{/each}}
                 </tr>
             </thead>
         
             <tbody>
-              {{#each data}}
+              {{#each data.rows}}
                 <tr>
                     <td>{{this.outfit_acc_id}}</td>
                     <td>{{this.outfit}}</td>
@@ -61,13 +61,13 @@
                 <fieldset class="fields">
                     <label> Outfit </label>
                     <select name="addOutfitID" id="addOutfitID">
-                        {{#each outfits}}
+                        {{#each outfits.rows}}
                         <option value="{{this.outfit_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> Accessory </label>
                     <select name="addAccessoryID" id="updateAccessoryID">
-                        {{#each accessories}} 
+                        {{#each accessories.rows}} 
                         <option value="{{this.accessory_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -84,19 +84,19 @@
                 <fieldset class="fields">
                     <label>Outfit-Accessory ID</label>
                     <select name="outfit_acc_id" id="outfit_acc_id">
-                        {{#each data}}
+                        {{#each data.rows}}
                         <option value="{{this.outfit_acc_id}}">{{this.outfit_acc_id}}</option>
                         {{/each}}
                     </select><br> 
                     <label> Outfit </label>
                     <select name="updateOutfitID" id="updateOutfitID">
-                        {{#each outfits}}
+                        {{#each outfits.rows}}
                         <option value="{{this.outfit_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> Accessory </label>
                     <select name="updateAccessoryID" id="updateAccessoryID">
-                        {{#each accessories}} 
+                        {{#each accessories.rows}} 
                         <option value="{{this.accessory_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -114,7 +114,7 @@
                 <p>Are you sure you wish to delete the following?</p>
                 <label>Outfit-Accessory ID</label>
                 <select name="outfit_acc_ID" id="outfit_acc_ID">
-                    {{#each data}}
+                    {{#each data.rows}}
                     <option value="{{this.outfit_acc_id}}">{{this.outfit_acc_id}}</option>
                     {{/each}}
                 </select><br>                

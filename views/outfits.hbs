@@ -21,7 +21,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title> homepage </title>
+		<title> outfits </title>
 	</head>
 
 	<body>
@@ -35,9 +35,9 @@
         <table id="outfits">
             <thead>
                 <tr>
-                    {{#each data.[0]}}
+                    {{#each data.fields}}
                     <th>
-                        {{@key}}
+                        {{name}}
                     </th>
                     {{/each}}
                     <th>Delete</th>
@@ -45,7 +45,7 @@
             </thead>
         
             <tbody>
-              {{#each data}}
+              {{#each data.rows}}
                 <tr>
                     <td>{{this.outfit_id}}</td>
                     <td>{{this.name}}</td>
@@ -78,7 +78,7 @@
                     <label for="input-topID"> Top </label>
                     <select name="topID" id="topID">
                         <option value="">Select Top</option>
-                        {{#each tops}}
+                        {{#each tops.rows}}
                         <option value="{{this.top_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -86,7 +86,7 @@
                     <label for="input-bottomID"> Bottom </label>
                     <select name="bottomID" id="bottomID">
                         <option value="">Select Bottoms</option>
-                        {{#each bottoms}}
+                        {{#each bottoms.rows}}
                         <option value="{{this.bottom_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -94,7 +94,7 @@
                     <label for="input-shoeID"> Shoes </label>
                     <select name="shoeID" id="shoeID">
                         <option value="">Select Shoes</option>
-                        {{#each shoes}}
+                        {{#each shoes.rows}}
                         <option value="{{this.shoe_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -102,7 +102,7 @@
                     <label> Jackets </label>
                     <select name="jacketID" id="jacketID">
                         <option value="NULL">Select a Jacket</option>
-                        {{#each jackets}}
+                        {{#each jackets.rows}}
                         <option value="{{this.jacket_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -112,12 +112,12 @@
                     <label> Last Worn </label> <input type="date" name="lastWorn"><br>
 
                     <label> Accessories:</label>
-                        {{#each accessories}}
+                        {{#each accessories.rows}}
                         <label><input type="checkbox" name="accessory" value="{{this.accessory_id}}">{{this.name}}</label>
                         {{/each}}
 
                     <label> Occasion(s):</label>
-                        {{#each occasions}}
+                        {{#each occasions.rows}}
                         <label><input type="checkbox" name="occasion" value="{{this.occasion_id}}">{{this.name}}</label>
                         {{/each}}
                 </fieldset>
@@ -134,7 +134,7 @@
                     <label>Outfit ID</label>
                     <select name="updateOutfitID" id="updateOutfitID">
                         <option value="">Select Outfit</option>
-                        {{#each data}}
+                        {{#each data.rows}}
                         <option value="{{this.outfit_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -144,7 +144,7 @@
                     <label for="input-topID"> Top </label>
                     <select name="topID" id="topID">
                         <option value="">Select Top</option>
-                        {{#each tops}}
+                        {{#each tops.rows}}
                         <option value="{{this.top_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -152,7 +152,7 @@
                     <label for="input-bottomID"> Bottom </label>
                     <select name="bottomID" id="bottomID">
                         <option value="">Select Bottoms</option>
-                        {{#each bottoms}}
+                        {{#each bottoms.rows}}
                         <option value="{{this.bottom_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -160,14 +160,14 @@
                     <label for="input-shoeID"> Shoes </label>
                     <select name="shoeID" id="shoeID">
                         <option value="">Select Shoes</option>
-                        {{#each shoes}}
+                        {{#each shoes.rows}}
                         <option value="{{this.shoe_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> Jackets </label>
                     <select name="jacketID" id="jacketID">
                         <option value="NULL"L>Select a Jacket</option>
-                        {{#each jackets}}
+                        {{#each jackets.rows}}
                         <option value="{{this.jacket_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
@@ -177,12 +177,12 @@
             
                     <label> Last Worn </label> <input type="date" name="lastWorn"><br>
                     <label> Accessories:</label>
-                        {{#each accessories}}
+                        {{#each accessories.rows}}
                         <label><input type="checkbox" name="updateAccessory" value="{{this.accessory_id}}">{{this.name}}</label>
                         {{/each}}
 
                     <label> Occasion(s):</label>
-                        {{#each occasions}}
+                        {{#each occasions.rows}}
                         <label><input type="checkbox" name="updateOccasion" value="{{this.occasion_id}}">{{this.name}}</label>
                         {{/each}}
                 </fieldset>
@@ -200,7 +200,7 @@
                 <label>Outfit ID</label>
                 <select name="deleteOutfitID" id="deleteOutfitID">
                     <option value="">Select Outfit</option>
-                    {{#each data}}
+                    {{#each data.rows}}
                     <option value="{{this.outfit_id}}">{{this.name}}</option>
                     {{/each}}
                 </select><br>

@@ -30,6 +30,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
+
 PORT = process.env.PORT || 4895; // Use the port provided by Heroku or fallback to 4895
 
 // Database
@@ -54,10 +55,16 @@ app.get('/', function(req, res)
 app.get('/users', function(req, res)
     {
         let query1 = "SELECT * FROM Users;";                    // Define query
-        db.pool.query(query1, function(error, rows, fields){   // execute query
-            res.render('users', {data: rows});
-        })
+        db.pool.query(query1, function(error, rows, fields) {
+            if (error) {
+                console.error("Error executing query:", error);
+            } else {
+                res.render('users', { data: rows });
+            }
+        });
     });
+
+    
 
 // Populate dropdowns for all items in outfits
 app.get('/outfits', function(req, res) {
