@@ -57,11 +57,13 @@
         <p>&nbsp;</p>
         </div> 
         <div id="insert" style="display: block">
-            <form id="addOccasion" method="POST" action="add-occasion">
+            <form id="addOccasion" method="POST" action="add-item/occasions">
+            <input type="hidden" name="page" value="occasions">
                 <legend><strong>Add New Occasion</strong></legend>
                 <fieldset class="fields">
                     <label> User </label>
                     <select name="addUserID" id="addUserID">
+                        <option value="">Select User</option>
                         {{#each users.rows}}
                         <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
                         {{/each}}
@@ -101,18 +103,19 @@
 
         <p>&nbsp;</p>
         <div id="delete" style="display: block">
-        <form id="deleteOccasion">
+        <form id="deleteOccasion" method="POST" action="/delete-item/occasions">
+        <input type="hidden" name="page" value="occasions">
             <legend><strong>Delete Accessory</strong></legend>
                 <fieldset class="fields">
-                <p>Are you sure you wish to delete the following?</p>
-                <label>Accessory ID</label>
+                <label>Select the Occasion you would like to delete</label>
                 <select name="deleteOccasionID" id="deleteOccasionID">
+                    <option value="">Select Occasion</option>
                     {{#each data.rows}}
-                    <option value="{{this.top_id}}">{{this.name}}</option>
+                    <option value="{{this.occasion_id}}">{{this.name}}</option>
                     {{/each}}
                 </select><br>               
             </fieldset>
-            <input class="btn" type="submit" id="deleteOccasion" value="Delete Occasion">
+            <input class="btn" type="submit" id="deleteOccasionID" value="Delete Occasion">
                 <input class="btn" type="button" value="cancel">
         </form> 
         </div>

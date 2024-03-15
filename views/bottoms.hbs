@@ -57,11 +57,13 @@
         <p>&nbsp;</p>
         </div> 
         <div id="insert" style="display: block">
-            <form id="addBottom" method="POST" action="/add-bottom">
+            <form id="addBottom" method="POST" action="/add-item/bottoms">
+            <input type="hidden" name="page" value="bottoms">            
                 <legend><strong>Add New Bottom</strong></legend>
                 <fieldset class="fields">
                     <label> User </label>
                     <select name="addUserID" id="addUserID">
+                        <option value="">Select User</option>
                         {{#each users.rows}}
                         <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
                         {{/each}}
@@ -77,18 +79,20 @@
 
         <p>&nbsp;</p>
         <div id="update" style="display: block">
-            <form id="updateOutfit">
+            <form id="updateBottom" method="POST" action="/update-item/bottoms">
+                <input type="hidden" name="page" value="bottoms">
                 <legend><strong>Update Bottom</strong></legend>
                 <fieldset class="fields">
                     <label>Bottom ID</label>
                     <select name="updateBottomID" id="updateBottomID">
-                        <option value=NULL>Select a Bottom</option>
+                        <option value="">Select Bottom</option>
                         {{#each data.rows}}
                         <option value="{{this.bottom_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> User </label>
                     <select name="updateUserID" id="updateUserID">
+                        <option value="">Select User</option>
                         {{#each users.rows}}
                         <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
                         {{/each}}
@@ -104,12 +108,13 @@
 
         <p>&nbsp;</p>
         <div id="delete" style="display: block">
-        <form id="deleteUser">
+        <form id="deleteBottomID" method="POST" action="/delete-item/bottoms">
+            <input type="hidden" name="page" value="bottoms">
             <legend><strong>Delete Bottom</strong></legend>
                 <fieldset class="fields">
-                <p>Are you sure you wish to delete the following?</p>
-                <label>Bottom ID</label>
+                <label>Select the item you wouldl ike to delete</label>
                 <select name="deleteBottomID" id="deleteBottomID">
+                    <option value="">Select Bottom</option>
                     {{#each data.rows}}
                     <option value="{{this.bottom_id}}">{{this.name}}</option>
                     {{/each}}
@@ -122,3 +127,38 @@
         </div>
 	</body>
 </html>
+
+<script>
+    function populateBottomInfo(bottomId) {
+        fetch(`/bottoms/${bottomId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error fetching user data");
+                }
+                return response.json();
+            })
+            .then(bottomData => {
+                // Populate the input fields with the fetched user data
+                document.getElementById("name").value = bottomData.name;
+                document.getElementById("type").value = bottomData.type;
+                document.getElementById("color").value = bottomData.color;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    }
+
+    // Update the onchange event handler of the select element
+    document.getElementById("updateBottomID").addEventListener("change", function() {
+        var selectedBottomId = this.value; // Get the selected bottom ID
+        if (selectedBottomId) { /
+            populateBottomInfo(selectedBottomId); // Call populateBottomInfo with the selected bottom ID
+        } else {
+            // Clear the input fields if no bottom is selected
+            document.getElementById("name").value = "";
+            document.getElementById("type").value = "";
+            document.getElementById("color").value = "";
+        }
+    });
+</script>
+

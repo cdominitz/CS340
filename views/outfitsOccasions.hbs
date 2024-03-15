@@ -55,17 +55,20 @@
         <p>&nbsp;</p>
         </div> 
         <div id="insert" style="display: block">
-            <form id="addOutfitOccasion" method="POST" action="/add-outfitsOccasions">
+            <form id="addOutfitOccasion" method="POST" action="/add-item/outfitsOccasions">
+            <input type="hidden" name="page" value="outfitsOccasions">
                 <legend><strong>Add New Outfit for Occasion</strong></legend>
                 <fieldset class="fields">
                     <label> Outfit </label>
                     <select name="addOutfitID" id="addOutfitID">
+                        <option value="">Select Outfit</option>
                         {{#each outfits.rows}}
                         <option value="{{this.outfit_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> Occasion </label>
                     <select name="addOccasionID" id="addOccasionID">
+                        <option value="">Select Occasion</option>
                         {{#each occasions.rows}}
                         <option value="{{this.occasion_id}}">{{this.name}}</option>
                         {{/each}}
@@ -107,18 +110,19 @@
 
         <p>&nbsp;</p>
         <div id="delete" style="display: block">
-        <form id="deleteOutfitOccasion">
+        <form id="deleteOutfitOccID" method="POST" action="/delete-item/outfitsOccasions">
+            <input type="hidden" name="page" value="outfitsOccasions">
             <legend><strong>Delete Outfit Occasion Pair</strong></legend>
                 <fieldset class="fields">
-                <p>Are you sure you wish to delete the following?</p>
-                <label>Outfit-Occasion ID</label>
-                <select name="outfit_occ_ID" id="outfit_occ_ID">
+                <label>Select the outfit-occasion pair ID you wish to delete</label>
+                <select name="deleteOutfitOccID" id="deleteOutfitOccID">
+                    <option value="">Select outfit-occasion ID</option>
                     {{#each data.rows}}
                     <option value="{{this.outfit_occ_id}}">{{this.outfit_occ_id}}</option>
                     {{/each}}
                 </select><br>                
             </fieldset>
-            <input class="btn" type="submit" id="deleteOccasion" value="Delete Outfit Occasion Pair">
+            <input class="btn" type="submit" id="deleteOutfitOccasion" value="Delete Outfit Occasion Pair">
                 <input class="btn" type="button" value="cancel">
         </form> 
         </div>

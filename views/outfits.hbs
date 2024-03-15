@@ -40,7 +40,6 @@
                         {{name}}
                     </th>
                     {{/each}}
-                    <th>Delete</th>
                 </tr>
             </thead>
         
@@ -55,12 +54,6 @@
                     <td>{{this.jackets}}</td>
                     <td>{{this.formality}}</td>
                     <td type="date">{{this.last_worn}}</td>
-                    <td>
-                        <form id="deleteOutfitID" method="POST" action="/delete-outfit">
-                            <button type="submit" name="deleteOutfitID" value="{{this.outfit_id}}">Delete</button>
-                        </form>            
-
-                    </td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -69,7 +62,8 @@
         <p>&nbsp;</p>
         </div> 
         <div id="insert" style="display: block">
-            <form id="addOutfit" method="POST" action="/add-outfit">
+            <form id="addOutfit" method="POST" action="/add-item/outfits">
+            <input type="hidden" name="page" value="outfits">
                 <legend><strong>Add New Outfit</strong></legend>
                 <fieldset class="fields">
                     <label for="input-name"> Name </label> 
@@ -193,11 +187,11 @@
 
         <p>&nbsp;</p>
         <div id="delete" style="display: block">
-        <form id="deleteOutfit" method="POST" action="/delete-outfit">
-            <legend><strong>Delete Outfit (Working)</strong></legend>
+        <form id="deleteOutfit" method="POST" action="/delete-item/outfits">
+            <input type="hidden" name="page" value="outfits">
+            <legend><strong>Delete Outfit</strong></legend>
                 <fieldset class="fields">
-                <p>Are you sure you wish to delete the following?</p>
-                <label>Outfit ID</label>
+                <label>Select the outfit you would like to delete</label>
                 <select name="deleteOutfitID" id="deleteOutfitID">
                     <option value="">Select Outfit</option>
                     {{#each data.rows}}

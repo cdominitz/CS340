@@ -58,11 +58,13 @@
         <p>&nbsp;</p>
         </div> 
         <div id="insert" style="display: block">
-            <form id="addJacket" method="POST" action="/add-jacket">
+            <form id="addJacket" method="POST" action="/add-item/jackets">
+                <input type="hidden" name="page" value="jackets"> 
                 <legend><strong>Add New Jacket</strong></legend>
                 <fieldset class="fields">
                     <label> User </label>
                     <select name="addUserID" id="addUserID">
+                        <option value="">Select User</option>
                         {{#each users.rows}}
                         <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
                         {{/each}}
@@ -104,17 +106,17 @@
 
         <p>&nbsp;</p>
         <div id="delete" style="display: block">
-        <form id="deleteJacket">
+        <form id="deleteJacketId" method="POST" action="/delete-item/jackets">
+        <input type="hidden" name="page" value="jackets"> 
             <legend><strong>Delete Jacket</strong></legend>
                 <fieldset class="fields">
-                <p>Are you sure you wish to delete the following?</p>
-                <label>Jacket ID</label>
+                <label>Select the jacket you would ike to delete</label>
                 <select name="deleteJacketID" id="deleteJacketID">
+                    <option value="">Select Jacket</option>
                     {{#each data.rows}}
                     <option value="{{this.jacket_id}}">{{this.name}}</option>
                     {{/each}}
                 </select><br>
-                    
             </fieldset>
             <input class="btn" type="submit" id="DeleteJacket" value="Delete Jacket">
                 <input class="btn" type="button" value="cancel">

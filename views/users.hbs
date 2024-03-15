@@ -50,7 +50,8 @@
             </tbody>
         </table>
 
-        <form id="addUser" method="POST" action="/add-user">
+        <form id="addUser" method="POST" action="/add-item/users">
+            <input type="hidden" name="page" value="users">
             <legend><strong>Add User</strong></legend>
             <fieldset class="fields">
                 <p>To add a new person, please enter their information below and click 'Submit'!</p>
@@ -73,7 +74,8 @@
 
         <p>&nbsp;</p>
         <div id="update" style="display: block">
-            <form id="updateUser" method="POST" action="/update-user">
+            <form id="updateUser" method="POST" action="/update-item/users">
+                <input type="hidden" name="page" value="users">
                 <legend><strong>Update User</strong></legend>
                 <fieldset class="fields">
                     <label>User ID</label>
@@ -84,27 +86,27 @@
                         <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
                         {{/each}}
                     </select><br>
-                    <label for="input-firstName"> First Name </label> 
-                    <input type="text" name="firstName" placeholder="e.g. John"><br>
-            
-                    <label for="input-lastName"> Last Name </label> 
-                    <input type="text" name="lastName" placeholder="e.g. Doe"><br>
-            
-                    <label for="input-email"> Email </label> 
-                    <input type="text" name="email" placeholder="e.g. JohnDoe@gmail.com"><br>
-            
-                    <label for="input-password"> Password </label> 
-                    <input type="text" name="password" placeholder="e.g. 12345"><br>
+                    <label for="firstName"> First Name </label> 
+                    <input type="text" id="firstName" name="firstName" placeholder="e.g. John"><br>
 
+                    <label for="lastName"> Last Name </label> 
+                    <input type="text" id="lastName" name="lastName" placeholder="e.g. Doe"><br>
+
+                    <label for="email"> Email </label> 
+                    <input type="text" id="email" name="email" placeholder="e.g. JohnDoe@gmail.com"><br>
+
+                    <label for="password"> Password </label> 
+                    <input type="text" id="password" name="password" placeholder="e.g. 12345"><br>
                 </fieldset>
                 <input class="btn" type="submit" id="updateUser" value="Update User">
-                    <input class="btn" type="button" value="cancel" >
+                <input class="btn" type="button" value="cancel" >
             </form> 
         </div>
 
         <p>&nbsp;</p>
         <div id="delete" style="display: block">
-            <form id="deleteUserID" method="POST" action="/delete-user">
+            <form id="deleteUserID" method="POST" action="/delete-item/users">
+            <input type="hidden" name="page" value="users">
             <legend><strong>Delete User</strong></legend>
                 <fieldset class="fields">
                 <p>Select the user you wish to delete</p>
@@ -122,3 +124,39 @@
         </div>
     </body>
 </html>
+
+<script>
+    function populateUserInfo(userId) {
+        fetch(`/users/${userId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error fetching user data");
+                }
+                return response.json();
+            })
+            .then(userData => {
+                // Populate the input fields with the fetched user data
+                document.getElementById("firstName").value = userData.first_name;
+                document.getElementById("lastName").value = userData.last_name;
+                document.getElementById("email").value = userData.email;
+                document.getElementById("password").value = userData.password;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    }
+
+    // Update the onchange event handler of the select element
+    document.getElementById("updateUserID").addEventListener("change", function() {
+        var selectedUserId = this.value; // Get the selected user ID
+        if (selectedUserId) { // Ensure a user is selected
+            populateUserInfo(selectedUserId); // Call populateUserInfo with the selected userId
+        } else {
+            // Clear the input fields if no user is selected
+            document.getElementById("firstName").value = "";
+            document.getElementById("lastName").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
+        }
+    });
+</script>
