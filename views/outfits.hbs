@@ -22,6 +22,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title> outfits </title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 	</head>
 
 	<body>
@@ -53,7 +54,7 @@
                     <td>{{this.shoes}}</td>
                     <td>{{this.jackets}}</td>
                     <td>{{this.formality}}</td>
-                    <td type="date">{{this.last_worn}}</td>
+                    <td>{{moment this.last_worn "MM/DD/YYYY"}}</td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -104,16 +105,6 @@
                     <label for="input-formality"> Formality </label> 
                     <input type="text" name="formality" placeholder="e.g. business casual"><br>
                     <label> Last Worn </label> <input type="date" name="lastWorn"><br>
-
-                    <label> Accessories:</label>
-                        {{#each accessories.rows}}
-                        <label><input type="checkbox" name="accessory" value="{{this.accessory_id}}">{{this.name}}</label>
-                        {{/each}}
-
-                    <label> Occasion(s):</label>
-                        {{#each occasions.rows}}
-                        <label><input type="checkbox" name="occasion" value="{{this.occasion_id}}">{{this.name}}</label>
-                        {{/each}}
                 </fieldset>
                 <input class="btn" type="submit" id="addOutfit" value="Add New Outfit">
                 <input class="btn" type="button" value="cancel">
@@ -122,8 +113,9 @@
 
         <p>&nbsp;</p>
         <div id="update" style="display: block">
-            <form id="updateOutfit" method="POST" action="/update-outfit">
-                <legend><strong>Update Outfit (Working)</strong></legend>
+            <form id="updateOutfit" method="POST" action="/update-item/outfits">
+                <input type="hidden" name="page" value="outfits">
+                <legend><strong>Update Outfit</strong></legend>
                 <fieldset class="fields">
                     <label>Outfit ID</label>
                     <select name="updateOutfitID" id="updateOutfitID">
@@ -133,52 +125,43 @@
                         {{/each}}
                     </select><br>
                     <label for="input-name"> Name </label> 
-                    <input type="text" name="name" placeholder="e.g. business suit"><br>
+                    <input type="text" id="updateName" name="updateName" placeholder="e.g. business suit"><br>
                     
-                    <label for="input-topID"> Top </label>
-                    <select name="topID" id="topID">
+                    <label> Top </label>
+                    <select name="updateTopID" id="updateTopID">
                         <option value="">Select Top</option>
                         {{#each tops.rows}}
                         <option value="{{this.top_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
 
-                    <label for="input-bottomID"> Bottom </label>
-                    <select name="bottomID" id="bottomID">
+                    <label> Bottom </label>
+                    <select name="updateBottomID" id="updateBottomID">
                         <option value="">Select Bottoms</option>
                         {{#each bottoms.rows}}
                         <option value="{{this.bottom_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
 
-                    <label for="input-shoeID"> Shoes </label>
-                    <select name="shoeID" id="shoeID">
+                    <label> Shoes </label>
+                    <select name="updateShoeID" id="updateShoeID">
                         <option value="">Select Shoes</option>
                         {{#each shoes.rows}}
                         <option value="{{this.shoe_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> Jackets </label>
-                    <select name="jacketID" id="jacketID">
-                        <option value="NULL"L>Select a Jacket</option>
+                    <select name="updateJacketID" id="updateJacketID">
+                        <option value="NULL">Select a Jacket</option>
                         {{#each jackets.rows}}
                         <option value="{{this.jacket_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
 
                     <label for="input-formality"> Formality </label> 
-                    <input type="text" name="formality" placeholder="e.g. business casual"><br>
+                    <input type="text" id="updateFormality" name="updateFormality" placeholder="e.g. business casual"><br>
             
-                    <label> Last Worn </label> <input type="date" name="lastWorn"><br>
-                    <label> Accessories:</label>
-                        {{#each accessories.rows}}
-                        <label><input type="checkbox" name="updateAccessory" value="{{this.accessory_id}}">{{this.name}}</label>
-                        {{/each}}
-
-                    <label> Occasion(s):</label>
-                        {{#each occasions.rows}}
-                        <label><input type="checkbox" name="updateOccasion" value="{{this.occasion_id}}">{{this.name}}</label>
-                        {{/each}}
+                    <label> Last Worn </label> <input type="date" id="updateLastWorn" name="updateLastWorn"><br>
                 </fieldset>
                 <input class="btn" type="submit" id="updateOutfit" value="Update Outfit">
                 <input class="btn" type="button" value="cancel">
@@ -206,3 +189,50 @@
         </div>
 	</body>
 </html>
+
+<script>
+    function populateOutfitInfo(outfitId) {
+    fetch(`/outfits/${outfitId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error fetching outfit data");
+            }
+            return response.json();
+        })
+        .then(outfitData => {
+            // Format the date
+            const formattedDate = moment(outfitData.last_worn).format('YYYY-MM-DD');
+
+            // Populate the input fields with the fetched outfit data
+            document.getElementById("updateName").value = outfitData.name;
+            document.getElementById("updateTopID").value = outfitData.top_id;
+            document.getElementById("updateBottomID").value = outfitData.bottom_id;
+            document.getElementById("updateShoeID").value = outfitData.shoe_id;
+            document.getElementById("updateJacketID").value = outfitData.jacket_id;
+            document.getElementById("updateFormality").value = outfitData.formality;
+            document.getElementById("updateLastWorn").value = formattedDate;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
+// Update the onchange event handler of the select element
+document.getElementById("updateOutfitID").addEventListener("change", function() {
+    var selectedOutfitId = this.value;          // Get the selected outfit ID
+    if (selectedOutfitId) {                     // Ensure an outfit is selected
+        populateOutfitInfo(selectedOutfitId);   // Call populateOutfitInfo with the selected outfit ID
+    } else {
+        // Clear the input fields if no outfit is selected
+            document.getElementById("updateName").value = "";
+            document.getElementById("updateTopID").value = "";
+            document.getElementById("updateBottomID").value = "";
+            document.getElementById("updateShoeID").value = "";
+            document.getElementById("updateJacketID").value = "";
+            document.getElementById("updateFormality").value = "";
+            document.getElementById("updateLastWorn").value = "";
+    }
+});
+
+</script>
+

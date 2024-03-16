@@ -96,7 +96,7 @@ JOIN Accessories ON OutfitsAccessories.accessory_id = Accessories.accessory_id;
 SELECT user_id, first_name, last_name, email, password 
 FROM Users WHERE user_id = :selected_user_id
 
--- get outfit_id
+-- get outfit_id 
 SELECT outfit_id FROM Outfits WHERE name = :specified_name AND top_id = :specified_top AND
  bottom_id = :specified_bottom AND shoe_id = :specified_shoe AND jacket_id = :specified_jacket
  AND formality = :specified_formality AND last_worn = :specified_last_worn;

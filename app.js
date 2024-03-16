@@ -21,6 +21,7 @@
 /*
     SETUP
 */
+PORT = process.env.PORT || 4895;
 
 // Express
 var express = require('express');
@@ -30,18 +31,22 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-
-PORT = process.env.PORT || 4895; // Use the port provided by Heroku or fallback to 4895
-
 // Database
 var db = require('./database/db-connector');
 const sqlQueries = require('./sqlQueries');
 
 // Handlebars
+const moment = require('moment');
+// var exphbs = require('express-handlebars');     // Import express-handlebars
 const { engine } = require('express-handlebars');
-var exphbs = require('express-handlebars');     // Import express-handlebars
-const { precompile } = require('handlebars');
-app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
+app.engine('.hbs', engine({                     // Create an instance of the handlebars engine to process templates
+    extname: ".hbs",
+    helpers: {
+        moment: function(date, format) {
+            return moment(date).format(format);
+        }
+    }
+}));                                    
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
 /*
@@ -238,8 +243,6 @@ app.get('/outfitsAccessories', function(req, res)
         })
     });
 
-
-
 // Generic route for adding an item
 app.post('/add-item/:page', function(req, res) {
     let page = req.params.page;
@@ -323,5 +326,5 @@ app.get('/:page/:id', function(req, res) {
     LISTENER
 */
 app.listen(PORT, function(){
-    console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
+    console.log(`Server started on port ${PORT}\n press Ctrl-C to terminate.`)
 });

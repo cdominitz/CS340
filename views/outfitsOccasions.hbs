@@ -81,29 +81,32 @@
 
         <p>&nbsp;</p>
         <div id="update" style="display: block">
-            <form id="updateOutfitOccasion">
+            <form id="updateOutfitOccasion" method="POST" action="update-item/outfitsOccasions">
                 <legend><strong>Update Outfit Occasion Pair</strong></legend>
                 <fieldset class="fields">
                     <label>Outfit-Occasion ID</label>
-                    <select name="outfit_occ_ID" id="outfit_occ_ID">
+                    <select name="updateOutfitOccID" id="updateOutfitOccID">
+                        <option value="">Select Outfit Occasion Pair</option>
                         {{#each data.rows}}
                         <option value="{{this.outfit_occ_id}}">{{this.outfit_occ_id}}</option>
                         {{/each}}
                     </select><br> 
                     <label> Outfit </label>
-                    <select name="updateOutfitID" id="addOutfitID">
+                    <select name="outfitId" id="outfitId">
+                        <option value="">Select Outfit</option>
                         {{#each outfits.rows}}
                         <option value="{{this.outfit_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> Occasion </label>
-                    <select name="updateOccasionID" id="updateOccasionID">
+                    <select name="occasionId" id="occasionId">
+                        <option value="">Select Occasion</option>
                         {{#each occasions.rows}}
                         <option value="{{this.occasion_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                 </fieldset>
-                <input class="btn" type="submit" id="updateOccasion" value="Update Outfit Occasion Pair">
+                <input class="btn" type="submit" id="updateOutfitOccasion" value="Update Outfit Occasion Pair">
                     <input class="btn" type="button" value="cancel" >
             </form> 
         </div>
@@ -128,3 +131,36 @@
         </div>
 	</body>
 </html>
+
+<script>
+    function populateOutfitOccInfo(outfitOccId) {
+    fetch(`/outfitsOccasions/${outfitOccId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error fetching outfit-occasion data");
+            }
+            return response.json();
+        })
+        .then(outfitOccData => {
+            // Populate the input fields with the fetched outfit-occasion data
+            document.getElementById("outfitId").value = outfitOccData.outfit_id;
+            document.getElementById("occasionId").value = outfitOccData.occasion_id;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
+// Update the onchange event handler of the select element
+document.getElementById("updateOutfitOccID").addEventListener("change", function() {
+    var selectedOutfitOccId = this.value; // Get the selected top ID
+    if (selectedOutfitOccId) { // Ensure a top is selected
+        populateOutfitOccInfo(selectedOutfitOccId); // Call populateTopInfo with the selected top ID
+    } else {
+        // Clear the input fields if no top is selected
+        document.getElementById("outfitId").value = "";
+        document.getElementById("occasionId").value = "";
+    }
+});
+
+</script>

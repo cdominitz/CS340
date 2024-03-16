@@ -91,17 +91,17 @@
                         {{/each}}
                     </select><br>
                     <label> User </label>
-                    <select name="updateUserID" id="updateUserID">
+                    <select name="userId" id="userId">
                         <option value="">Select User</option>
                         {{#each users.rows}}
                         <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
                         {{/each}}
                     </select><br>
-                    <label> Name </label> <input type="text" name="name" placeholder="e.g. levis"><br>
-                    <label> Type </label> <input type="text" name="type" placeholder="e.g. jeans"><br>
-                    <label> Color </label> <input type="text" name="color" placeholder="e.g. blue"><br>
+                    <label> Name </label> <input type="text" id="name" name="name" placeholder="e.g. levis"><br>
+                    <label> Type </label> <input type="text" id="type" name="type" placeholder="e.g. jeans"><br>
+                    <label> Color </label> <input type="text" id="color" name="color" placeholder="e.g. blue"><br>
                 </fieldset>
-                <input class="btn" type="submit" id="UpdateTop" value="Update Bottom">
+                <input class="btn" type="submit" id="UpdateBottom" value="Update Bottom">
                     <input class="btn" type="button" value="cancel" >
             </form> 
         </div>
@@ -138,7 +138,8 @@
                 return response.json();
             })
             .then(bottomData => {
-                // Populate the input fields with the fetched user data
+                // Populate the input fields with the fetched bottom data
+                document.getElementById("userId").value = bottomData.user_id;
                 document.getElementById("name").value = bottomData.name;
                 document.getElementById("type").value = bottomData.type;
                 document.getElementById("color").value = bottomData.color;
@@ -151,10 +152,11 @@
     // Update the onchange event handler of the select element
     document.getElementById("updateBottomID").addEventListener("change", function() {
         var selectedBottomId = this.value; // Get the selected bottom ID
-        if (selectedBottomId) { /
+        if (selectedBottomId) { // Ensure a bottom is selected
             populateBottomInfo(selectedBottomId); // Call populateBottomInfo with the selected bottom ID
         } else {
             // Clear the input fields if no bottom is selected
+            document.getElementById("userId").value = "";
             document.getElementById("name").value = "";
             document.getElementById("type").value = "";
             document.getElementById("color").value = "";

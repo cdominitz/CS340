@@ -82,23 +82,26 @@
 
         <p>&nbsp;</p>
         <div id="update" style="display: block">
-            <form id="updateOutfitAccessory">
+            <form id="updateOutfitAccessory" method="POST" action="update-item/outfitsAccessories">
                 <legend><strong>Update Outfit Accessory Pair</strong></legend>
                 <fieldset class="fields">
                     <label>Outfit-Accessory ID</label>
-                    <select name="outfit_acc_id" id="outfit_acc_id">
+                    <select name="updateOutfitAccID" id="updateOutfitAccID">
+                        <option value="">Outfit Accessory Pair</option> 
                         {{#each data.rows}}
                         <option value="{{this.outfit_acc_id}}">{{this.outfit_acc_id}}</option>
                         {{/each}}
                     </select><br> 
                     <label> Outfit </label>
-                    <select name="updateOutfitID" id="updateOutfitID">
+                    <select name="outfitId" id="outfitId">
+                        <option value="">Select Outfit</option>
                         {{#each outfits.rows}}
                         <option value="{{this.outfit_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> Accessory </label>
-                    <select name="updateAccessoryID" id="updateAccessoryID">
+                    <select name="accessoryId" id="accessoryId">
+                        <option value="">Select Accessory</option>
                         {{#each accessories.rows}} 
                         <option value="{{this.accessory_id}}">{{this.name}}</option>
                         {{/each}}
@@ -129,3 +132,37 @@
         </div>
 	</body>
 </html>
+
+
+<script>
+    function populateOutfitAccInfo(outfitAccId) {
+    fetch(`/outfitsAccessories/${outfitAccId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error fetching outfit-accessory data");
+            }
+            return response.json();
+        })
+        .then(outfitAccData => {
+            // Populate the input fields with the fetched outfit-accessory data
+            document.getElementById("outfitId").value = outfitAccData.outfit_id;
+            document.getElementById("accessoryId").value = outfitAccData.accessory_id;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
+// Update the onchange event handler of the select element
+document.getElementById("updateOutfitAccID").addEventListener("change", function() {
+    var selectedOutfitAccId = this.value; // Get the selected ID
+    if (selectedOutfitAccId) { // Ensure an outfit-accessory pair is selected
+        populateOutfitAccInfo(selectedOutfitAccId); // Call populateOutfitAccInfo with the selected ID
+    } else {
+        // Clear the input fields if no top is selected
+        document.getElementById("outfitId").value = "";
+        document.getElementById("accessoryId").value = "";
+    }
+});
+
+</script>

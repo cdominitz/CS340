@@ -78,23 +78,26 @@
 
         <p>&nbsp;</p>
         <div id="update" style="display: block">
-            <form id="updateOccasion">
+            <form id="updateOccasion" method="POST" action="/update-item/occasions">
+                <input type="hidden" name="page" value="occasions">
                 <legend><strong>Update Occasion</strong></legend>
                 <fieldset class="fields">
                     <label>Occasion ID</label>
                     <select name="updateOccasionID" id="updateOccasionID">
+                        <option value="">Select Occasion</option>
                         {{#each data.rows}}
-                        <option value="{{this.top_id}}">{{this.name}}</option>
+                        <option value="{{this.occasion_id}}">{{this.name}}</option>
                         {{/each}}
                     </select><br>
                     <label> User </label>
-                    <select name="updateUserID" id="updateUserID">
+                    <select name="userId" id="userId">
+                        <option value="">Select User</option>
                         {{#each users.rows}}
                         <option value="{{this.user_id}}">{{this.first_name}} {{this.last_name}}</option>
                         {{/each}}
                     </select><br>
-                    <label> Name </label> <input type="text" name="name" placeholder="e.g. family gathering"><br>
-                    <label> Formality </label> <input type="text" name="type" placeholder="e.g. casual"><br>
+                    <label> Name </label> <input type="text" id="name" name="name" placeholder="e.g. family gathering"><br>
+                    <label> Formality </label> <input type="text" id="formality" name="formality" placeholder="e.g. casual"><br>
                 </fieldset>
                 <input class="btn" type="submit" id="updateOccasion" value="Update Occasion">
                     <input class="btn" type="button" value="cancel" >
@@ -122,3 +125,37 @@
 	</body>
 </html>
 
+<script>
+    function populateOccasionInfo(occasionId) {
+    fetch(`/occasions/${occasionId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error fetching occasion data");
+            }
+            return response.json();
+        })
+        .then(occasionData => {
+            // Populate the input fields with the fetched occasion data
+            document.getElementById("userId").value = occasionData.user_id;
+            document.getElementById("name").value = occasionData.name;
+            document.getElementById("formality").value = occasionData.formality;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
+// Update the onchange event handler of the select element
+document.getElementById("updateOccasionID").addEventListener("change", function() {
+    var selectedOccasionId = this.value; // Get the selected occasion ID
+    if (selectedOccasionId) { // Ensure an occasion is selected
+        populateOccasionInfo(selectedOccasionId); // Call populateOccasionInfo with the selected ID
+    } else {
+        // Clear the input fields if no occasion is selected
+        document.getElementById("userId").value = "";
+        document.getElementById("name").value = "";
+        document.getElementById("formality").value = "";
+    }
+});
+
+</script>
