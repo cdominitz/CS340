@@ -27,24 +27,21 @@
 	<body>
         <h2>Shoes</h2>
         <div id="browse" style="display: block">
-        <p><strong>Browse Shoes</strong></p>
 
         <table id="shoes">
             <thead>
                 <tr>
-                    {{#each data.fields}}
-                    <th>
-                        {{name}}
-                    </th>
-                    {{/each}}
+                    <th>User</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Color</th>
                 </tr>
             </thead>
         
             <tbody>
               {{#each data.rows}}
                 <tr>
-                    <td>{{this.shoe_id}}</td>
-                    <td>{{this.user_id}}</td>
+                    <td>{{this.first_name}} {{this.last_name}}</td>
                     <td>{{this.name}}</td>
                     <td>{{this.type}}</td>
                     <td>{{this.color}}</td>

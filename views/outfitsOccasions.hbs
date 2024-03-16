@@ -28,23 +28,18 @@
 
         <H2>Outfits for Occasions</H2>  
         <div id="browse" style="display: block">
-        <p><strong>Browse Outfits for Occasions</strong></p>
 
         <table id="outfitOccasions">
             <thead>
                 <tr>
-                    {{#each data.fields}}
-                    <th>
-                        {{name}}
-                    </th>
-                    {{/each}}
+                    <th>Outfit</th>
+                    <th>Occasion</th>
                 </tr>
             </thead>
         
             <tbody>
               {{#each data.rows}}
                 <tr>
-                    <td>{{this.outfit_occ_id}}</td>
                     <td>{{this.outfit}}</td>
                     <td>{{this.occasion}}</td>
                 </tr>
@@ -88,7 +83,7 @@
                     <select name="updateOutfitOccID" id="updateOutfitOccID">
                         <option value="">Select Outfit Occasion Pair</option>
                         {{#each data.rows}}
-                        <option value="{{this.outfit_occ_id}}">{{this.outfit_occ_id}}</option>
+                        <option value="{{this.outfit_occ_id}}">{{this.outfit}} - {{this.occasion}}</option>
                         {{/each}}
                     </select><br> 
                     <label> Outfit </label>
@@ -121,7 +116,7 @@
                 <select name="deleteOutfitOccID" id="deleteOutfitOccID">
                     <option value="">Select outfit-occasion ID</option>
                     {{#each data.rows}}
-                    <option value="{{this.outfit_occ_id}}">{{this.outfit_occ_id}}</option>
+                    <option value="{{this.outfit_occ_id}}">{{this.outfit}} - {{this.occasion}}</option>
                     {{/each}}
                 </select><br>                
             </fieldset>

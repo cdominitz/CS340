@@ -29,22 +29,18 @@
         <table id="users">
             <thead>
                 <tr>
-                    {{#each data.fields}}
-                    <th>
-                        {{name}}
-                    </th>
-                    {{/each}}
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
                 </tr>
             </thead>
 
             <tbody id="table_data">
             {{#each data.rows}}
                 <tr>
-                    <td>{{this.user_id}}</td>
                     <td>{{this.first_name}}</td>
                     <td>{{this.last_name}}</td>
                     <td>{{this.email}}</td>
-                    <td>{{this.password}}</td>
                 </tr>
                 {{/each}}
             </tbody>

@@ -49,199 +49,267 @@ app.engine('.hbs', engine({                     // Create an instance of the han
 }));                                    
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
+
+// Function to execute a query with error handling
+async function executeQuery(query) {
+    try {
+        const result = await db.pool.query(query);
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
 /*
     ROUTES
 */
 // Pages
-app.get('/', function(req, res)
-    {
-        res.render('index');
-    });
+// Route for '/'
+app.get('/', function(req, res){
+    res.render('index');
+});
 
-app.get('/users', function(req, res)
-    {
-        let query1 = "SELECT * FROM Users;";                    // Define query
-        db.pool.query(query1, function(error, rows, fields) {
-            if (error) {
-                console.error("Error executing query:", error);
-            } else {
-                res.render('users', { data: rows });
-            }
-        });
-    });
-
-// Populate dropdowns for all items in outfits
-app.get('/outfits', function(req, res) {
-    let outfits = `SELECT Outfits.outfit_id, Outfits.name, Tops.name as tops, Bottoms.name as bottoms, 
-                Shoes.name as shoes, Jackets.name as jackets, Outfits.formality, Outfits.last_worn
-                FROM Outfits JOIN Tops ON Outfits.top_id = Tops.top_id JOIN Bottoms ON 
-                Outfits.bottom_id = Bottoms.bottom_id JOIN Shoes ON Outfits.shoe_id = Shoes.shoe_id
-                LEFT JOIN Jackets ON Outfits.jacket_id = Jackets.jacket_id ORDER BY Outfits.outfit_id ASC;`;
-    let tops = `SELECT * FROM Tops;`;
-    let bottoms = `SELECT * FROM Bottoms;`;
-    let shoes = `SELECT * FROM Shoes;`;
-    let jackets = `SELECT * FROM Jackets;`;
-    let accessories = `SELECT * FROM Accessories;`;
-    let occasions = `SELECT * FROM Occasions;`;
-
-    db.pool.query(outfits, function(error, rows, fields){   // execute query
-        let outfits = rows;
+// Route for '/users'
+app.get('/users', async function(req, res) {
+    try {
+        const query = "SELECT * FROM Users;";
+        const users = await executeQuery(query);
+        res.render('users', { data: users });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
     
-        db.pool.query(tops, (error, rows, fields) => {
-            let tops = rows;
 
-            db.pool.query(bottoms, (error, rows, fields) => {
-                let bottoms = rows;
+// Route for '/outfits'
+app.get('/outfits', async function(req, res) {
+    try {
+        const outfitsQuery = `SELECT Outfits.outfit_id, Outfits.name, Tops.name as tops, Bottoms.name as bottoms, 
+                                Shoes.name as shoes, Jackets.name as jackets, Outfits.formality, Outfits.last_worn
+                                FROM Outfits JOIN Tops ON Outfits.top_id = Tops.top_id JOIN Bottoms ON 
+                                Outfits.bottom_id = Bottoms.bottom_id JOIN Shoes ON Outfits.shoe_id = Shoes.shoe_id
+                                LEFT JOIN Jackets ON Outfits.jacket_id = Jackets.jacket_id ORDER BY Outfits.outfit_id ASC;`;
 
-                db.pool.query(shoes, (error, rows, fields) => {
-                    let shoes = rows;
+        const outfits = await executeQuery(outfitsQuery);
+        res.render('outfits', { data: outfits });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
 
-                    db.pool.query(jackets, (error, rows, fields) => {
-                        let jackets = rows;
+app.get('/tops', async function(req, res) {
+    try {
+        const query = `
+            SELECT Tops.*, Users.first_name, Users.last_name
+            FROM Tops
+            JOIN Users ON Tops.user_id = Users.user_id;
+        `;
 
-                        db.pool.query(accessories, (error, rows, fields) => {
-                            let accessories = rows;
-                            
-                            db.pool.query(occasions, (error, rows, fields) => {
-                                let occasions = rows;
+        const data = await executeQuery(query);
 
-                                return res.render('outfits', {data: outfits, tops: tops, bottoms: bottoms,
-                                shoes: shoes, jackets: jackets, accessories: accessories, occasions: occasions});
-                            })
-                        })
-                    })
-                })
-            })
-        })
-    })
-    });
+        res.render('tops', { data });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
 
-app.get('/tops', function(req, res)
-{
-    let query1 = `SELECT * FROM Tops;`;                    // Define query
-    let query2 = `SELECT * FROM Users`;
-    db.pool.query(query2, function(error, rows, fields){   // execute query
-        let users = rows;
+app.get('/bottoms', async function(req, res) {
+    try {
+        const query = `
+            SELECT Bottoms.*, Users.first_name, Users.last_name
+            FROM Bottoms
+            JOIN Users ON Bottoms.user_id = Users.user_id;
+        `;
 
-        db.pool.query(query1, function(error, rows, fields){
-            let tops = rows;
-            res.render('tops', {data: tops, users: users});
-        })
-        })
-    });
+        const data = await executeQuery(query);
 
-app.get('/bottoms', function(req, res)
-    {
-        let query1 = `SELECT * FROM Bottoms;`;                  // Define query
-        let query2 = `SELECT * FROM Users`;
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
+        res.render('bottoms', { data });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
 
-            db.pool.query(query1, function(error, rows, fields){
-                let bottoms = rows;
-                res.render('bottoms', {data: bottoms, users: users});
-            })
-            })
-    });
+app.get('/shoes', async function(req, res) {
+    try {
+        const shoesQuery = `
+            SELECT Shoes.*, Users.first_name, Users.last_name
+            FROM Shoes
+            JOIN Users ON Shoes.user_id = Users.user_id;
+        `;
 
-app.get('/shoes', function(req, res)
-    {
-        let query1 = `SELECT * FROM Shoes;`;                    // Define query
-        let query2 = `SELECT * FROM Users`;
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
+        const shoes = await executeQuery(shoesQuery);
 
-            db.pool.query(query1, function(error, rows, fields){
-                let shoes = rows;
-                res.render('shoes', {data: shoes, users: users});
-            })
-        })
-    });
+        res.render('shoes', { data: shoes });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
 
-app.get('/jackets', function(req, res)
-    {
-        let query1 = `SELECT * FROM Jackets;`;                 // Define query
-        let query2 = `SELECT * FROM Users`
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
+app.get('/jackets', async function(req, res) {
+    try {
+        const query = `
+            SELECT Jackets.*, Users.first_name, Users.last_name
+            FROM Jackets
+            JOIN Users ON Jackets.user_id = Users.user_id;
+        `;
 
-            db.pool.query(query1, function(error, rows, fields){
-                let jackets = rows;
-                res.render('jackets', {data: jackets, users: users});
-            })
-        })
-    });
+        const data = await executeQuery(query);
 
-app.get('/accessories', function(req, res)
-    {
-        let query1 = `SELECT * FROM Accessories;`;             // Define query
-        let query2 = `SELECT * FROM Users;`;
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
+        res.render('jackets', { data });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
 
-            db.pool.query(query1, function(error, rows, fields){
-                let accessories = rows;
-                res.render('accessories', {data: accessories, users: users});
-            })
-        })
-    });
+app.get('/tops', async function(req, res) {
+    try {
+        const query = `
+            SELECT Tops.*, Users.first_name, Users.last_name
+            FROM Tops
+            JOIN Users ON Tops.user_id = Users.user_id;
+        `;
 
-app.get('/occasions', function(req, res)
-    {
-        let query1 = `SELECT * FROM Occasions;`;               // Define query
-        let query2 = `SELECT * FROM Users;`;
-        db.pool.query(query2, function(error, rows, fields){   // execute query
-            let users = rows;
+        const data = await executeQuery(query);
 
-            db.pool.query(query1, function(error, rows, fields){
-                let occasions = rows;
-                res.render('occasions', {data: occasions, users: users});
-            })
-        })
-    });
+        res.render('tops', { data });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
 
-app.get('/outfitsOccasions', function(req, res)
-    {
-        let query1 = `SELECT OutfitsOccasions.outfit_occ_id, Outfits.name as outfit, 
-                    Occasions.name as occasion FROM OutfitsOccasions JOIN Outfits ON 
-                    OutfitsOccasions.outfit_id = Outfits.outfit_id JOIN Occasions ON 
-                    OutfitsOccasions.occasion_id = Occasions.occasion_id;`;
-        let query2 = `SELECT * FROM Outfits;`;  
-        let query3 = `SELECT * FROM Occasions;`;
-        db.pool.query(query3, function(error, rows, fields){  
-            let occasions = rows
-            
-            db.pool.query(query2, function(error, rows, fields){ 
-                let outfits = rows
+app.get('/bottoms', async function(req, res) {
+    try {
+        const query = `
+            SELECT Bottoms.*, Users.first_name, Users.last_name
+            FROM Bottoms
+            JOIN Users ON Bottoms.user_id = Users.user_id;
+        `;
 
-                db.pool.query(query1, function(error, rows, fields){  
-                    res.render('outfitsOccasions', {data: rows, outfits: outfits, occasions: occasions});
-                })
-            })
-        })
-    });
+        const data = await executeQuery(query);
+
+        res.render('bottoms', { data });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
+
+app.get('/jackets', async function(req, res) {
+    try {
+        const query = `
+            SELECT Jackets.*, Users.first_name, Users.last_name
+            FROM Jackets
+            JOIN Users ON Jackets.user_id = Users.user_id;
+        `;
+
+        const data = await executeQuery(query);
+
+        res.render('jackets', { data });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
+
+app.get('/accessories', async function(req, res) {
+    try {
+        const query = `
+            SELECT Accessories.*, Users.first_name, Users.last_name
+            FROM Accessories
+            JOIN Users ON Accessories.user_id = Users.user_id;
+        `;
+
+        const data = await executeQuery(query);
+
+        res.render('accessories', { data });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
+
+
+app.get('/occasions', async function(req, res) {
+    try {
+        const query = `
+            SELECT Occasions.*, Users.first_name, Users.last_name
+            FROM Occasions
+            JOIN Users ON Occasions.user_id = Users.user_id;
+        `;
+
+        const data = await executeQuery(query);
+
+        res.render('occasions', { data });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
+
+// Route to outfitsOccasions
+app.get('/outfitsOccasions', async function(req, res) {
+    try {
+        const outfitsOccasionsQuery = `
+            SELECT OutfitsOccasions.outfit_occ_id, Outfits.name as outfit, 
+                Occasions.name as occasion 
+            FROM OutfitsOccasions 
+            JOIN Outfits ON OutfitsOccasions.outfit_id = Outfits.outfit_id 
+            JOIN Occasions ON OutfitsOccasions.occasion_id = Occasions.occasion_id;
+        `;
+
+        const outfitsQuery = `SELECT * FROM Outfits;`;
+
+        const occasionsQuery = `SELECT * FROM Occasions;`;
+
+        const [occasions, outfits, outfitsOccasions] = await Promise.all([
+            executeQuery(occasionsQuery),
+            executeQuery(outfitsQuery),
+            executeQuery(outfitsOccasionsQuery)
+        ]);
+
+        res.render('outfitsOccasions', { data: outfitsOccasions, outfits, occasions });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
+
     
-app.get('/outfitsAccessories', function(req, res)
-    {
-        let query1 = `SELECT OutfitsAccessories.outfit_acc_id, Outfits.name as outfit,
-                    Accessories.name as accessory FROM OutfitsAccessories JOIN Outfits 
-                    ON OutfitsAccessories.outfit_id = Outfits.outfit_id JOIN Accessories 
-                    ON OutfitsAccessories.accessory_id = Accessories.accessory_id 
-                    ORDER BY OutfitsAccessories.outfit_acc_id;`;
-        let query2 = `SELECT * FROM Outfits;`;
-        let query3 = `SELECT * FROM Accessories;`;   
-        db.pool.query(query3, function(error, rows, fields){                  
-            let accessories = rows;
+app.get('/outfitsAccessories', async function(req, res) {
+    try {
+        const outfitsAccessoriesQuery = `
+            SELECT OutfitsAccessories.outfit_acc_id, Outfits.name as outfit,
+                Accessories.name as accessory 
+            FROM OutfitsAccessories 
+            JOIN Outfits ON OutfitsAccessories.outfit_id = Outfits.outfit_id 
+            JOIN Accessories ON OutfitsAccessories.accessory_id = Accessories.accessory_id 
+            ORDER BY OutfitsAccessories.outfit_acc_id;
+        `;
 
-            db.pool.query(query2, function(error, rows, fields){ 
-                let outfits = rows
+        const outfitsQuery = `SELECT * FROM Outfits;`;
 
-                db.pool.query(query1, function(error, rows, fields){  
-                    res.render('outfitsAccessories', {data: rows, outfits: outfits, accessories: accessories});
-                })
-            })
-        })
-    });
+        const accessoriesQuery = `SELECT * FROM Accessories;`;
+
+        const [accessories, outfits, outfitsAccessories] = await Promise.all([
+            executeQuery(accessoriesQuery),
+            executeQuery(outfitsQuery),
+            executeQuery(outfitsAccessoriesQuery)
+        ]);
+
+        res.render('outfitsAccessories', { data: outfitsAccessories, outfits, accessories });
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
 
 // Generic route for adding an item
 app.post('/add-item/:page', function(req, res) {
