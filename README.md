@@ -10,12 +10,15 @@ To connect to your PostgreSQL database, you need to set the `DATABASE_URL` envir
 #### Setting up Database Connection
 
 1. Set the `DATABASE_URL` environment variable in your hosting environment (e.g., Heroku). The connection string should be of the format:
+```bash
 postgres://username:password@host:port/database
-
+```
 Replace `username`, `password`, `host`, `port`, and `database` with your PostgreSQL credentials and database information.
 
 2. If you're running the application locally, you can set the `DATABASE_URL` environment variable in a `.env` file in the root directory of your project. For example:
+```bash
 DATABASE_URL=postgres://username:password@localhost:5432/database
+```
 Replace `username`, `password`, and `database` with your local PostgreSQL credentials and database name.
 
 
