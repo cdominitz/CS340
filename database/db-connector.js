@@ -21,7 +21,7 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    connectionString: "postgres://u1dsaiuvc3tl9s:pa457fbbc641307c24223e7656fa171729cde5c858f00a1100db49130d418df49@ceu9lmqblp8t3q.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d58n6lfurskcol",
+    connectionString: process.env.DATABASE_URL, //change to your own string
     ssl: {
       rejectUnauthorized: false // For self-signed certificates, remove this line if you have a valid certificate
     }

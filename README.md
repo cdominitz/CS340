@@ -3,6 +3,22 @@
 ## Overview
 Our website is a personal outfit manager where users can create an account that holds a digital collection of their closet. Users can add their tops, bottoms, shoes, jackets, and accessories as individual items and create outfits using these items. Outfits may also be linked to specific occasions.
 
+### Database Connection
+
+To connect to your PostgreSQL database, you need to set the `DATABASE_URL` environment variable. This variable should contain your PostgreSQL connection string, which includes information such as the host, username, password, and database name.
+
+#### Setting up Database Connection
+
+1. Set the `DATABASE_URL` environment variable in your hosting environment (e.g., Heroku). The connection string should be of the format:
+postgres://username:password@host:port/database
+
+Replace `username`, `password`, `host`, `port`, and `database` with your PostgreSQL credentials and database information.
+
+2. If you're running the application locally, you can set the `DATABASE_URL` environment variable in a `.env` file in the root directory of your project. For example:
+DATABASE_URL=postgres://username:password@localhost:5432/database
+Replace `username`, `password`, and `database` with your local PostgreSQL credentials and database name.
+
+
 ## Installation
 
 ### Clone the repository:
@@ -22,24 +38,12 @@ npm install
 
 ### Install and run the DDL (Data Definition Language) SQL file to create the database schema:
 ```bash
-mysql -u your_username -p your_database_name < database/DDL.sql
+psql -U your_username -d your_database_name -a -f database/DDL.sql
 ```
-
-### Install and run the DML (Data Manipulation Language) SQL file to populate the database with initial data:
-```bash
-mysql -u your_username -p your_database_name < database/DML.sql
-```
-
-### Update database connection details in the db-connector.js file:
-  Modify the following variables in db-connector.js:
-  - host
-  - user
-  - password
-  - database
 
 ### Start the server:
 ```bash
-  node app.js
+  npm start
 ```
 
 ## Database Outline
