@@ -58,6 +58,13 @@ psql -U your_username -d your_database_name -a -f database/DDL.sql
 ## Working Website
 You can visit the deployed version of this project at [Outfit Database Manager](https://outfit-db-cafeb92a5b5e.herokuapp.com/).
 
+## Next Steps
+- Implement user authentication to ensure users can only access their own closet.
+- Enable adding and updating accessories and occasions directly from the outfits page.
+- Implement search, sort, and filter functionality for the tables to enhance user experience.
+  
+## Note
+Originally developed using MySQL and PHP/PHPMyAdmin. Transitioned to PostgreSQL for deployment on Heroku.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
